@@ -1,0 +1,3 @@
+[submodule "submodules/vicuna"]
+	path = submodules/vicuna
+	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/vicuna.git
