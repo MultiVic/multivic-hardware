@@ -1,0 +1,114 @@
+{
+    "name": "main",
+    "type": "xbar",
+    "clock": "clk_main_i",
+    "clock_connections": {
+        "clk_main_i":   "main"
+    },
+    "reset": "rst_main_ni"
+    "reset_connections": {
+        rst_main_ni:   "sys"
+    },
+    "nodes": [
+        {
+            "name": "management_core_instr",
+            "type": "host",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni"
+
+            "xbar": false,
+            "pipeline": false
+        },
+        {
+            "name": "management_core_data",
+            "type": "host",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "pipeline": false
+        },
+        {
+            "name": "management_scratchpad_instr",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00000000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        },
+        {
+            "name": "management_scratchpad_data",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00100000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        },
+        {
+            "name": "vicuna0_scratchpad_instr",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00200000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        },
+        {
+            "name": "vicuna0_scratchpad_data",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00300000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        },
+        {
+            "name": "vicuna1_scratchpad_instr",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00400000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        },
+        {
+            "name": "vicuna1_scratchpad_data",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00500000",
+                "size_byte": "0x10000" // 64 KiB
+            }]
+        }
+    ],
+    "connections": {
+        "management_core_data": [
+            "management_scratchpad_data",
+            "vicuna0_scratchpad_data",
+            "vicuna0_scratchpad_instr",
+            "vicuna1_scratchpad_data",
+            "vicuna1_scratchpad_instr"
+        ],
+        "management_core_instr": ["management_scratchpad_instr"]
+    }
+}
