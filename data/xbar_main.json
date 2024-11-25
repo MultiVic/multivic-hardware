@@ -53,6 +53,18 @@
             }]
         },
         {
+            "name": "uart",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addr": "0x00800000",
+                "size_byte": "0x1000" // 64 KiB
+            }]
+        },
+        {
             "name": "vicuna0_scratchpad_instr",
             "type": "device",
             "clock": "clk_main_i",
@@ -107,7 +119,8 @@
             "vicuna0_scratchpad_data",
             "vicuna0_scratchpad_instr",
             "vicuna1_scratchpad_data",
-            "vicuna1_scratchpad_instr"
+            "vicuna1_scratchpad_instr",
+            "uart"
         ],
         "management_core_instr": ["management_scratchpad_instr"]
     }
