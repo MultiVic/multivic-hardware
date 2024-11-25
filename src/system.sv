@@ -1,4 +1,5 @@
-module system #(
+
+module system_multicore #(
     parameter int unsigned ClockFrequency   = 125_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
@@ -41,7 +42,7 @@ xbar_main #() u_xbar_main (
     .tl_management_scratchpad_data_rsp(management_scratchpad_data_rsp),
 
     .tl_uart_req(uart_req),
-    .tl_uart_rsp(uart_rsp),
+    .tl_uart_rsp(uart_rsp)
 );
 
   rv_core_ibex #(
@@ -61,7 +62,7 @@ xbar_main #() u_xbar_main (
     .RV32E(),
     .RV32M(),
     .RV32B(),
-    .RegFile(RvCoreIbexRegFile),
+    .RegFile(RegFile),
     .BranchTargetALU(),
     .WritebackStage(),
     .ICache(),
@@ -87,9 +88,9 @@ xbar_main #() u_xbar_main (
       .ram_cfg_i(),
       .hart_id_i(),
       .boot_addr_i(),
-      .irq_software_i(rv_plic_msip),
-      .irq_timer_i(rv_core_ibex_irq_timer),
-      .irq_external_i(rv_plic_irq),
+      .irq_software_i(),
+      .irq_timer_i(),
+      .irq_external_i(),
       .esc_tx_i(),
       .esc_rx_o(),
       .debug_req_i(),
@@ -109,8 +110,8 @@ xbar_main #() u_xbar_main (
       .cored_tl_h_i(management_core_instr_rsp),
       .cfg_tl_d_i(),
       .cfg_tl_d_o(),
-      .scanmode_i,
-      .scan_rst_ni,
+      .scanmode_i(),
+      .scan_rst_ni(),
 
       // Clock and reset connections
       .clk_i (clk_sys_i),
@@ -118,7 +119,9 @@ xbar_main #() u_xbar_main (
       .clk_esc_i (),
       .clk_otp_i (),
       .rst_ni (rst_sys_ni),
-      .rst_edn_ni (),
-      .rst_esc_ni (),
-      .rst_otp_ni ()
+      .rst_edn_ni ('b0),
+      .rst_esc_ni ('b0),
+      .rst_otp_ni ('b0)
   );
+
+endmodule

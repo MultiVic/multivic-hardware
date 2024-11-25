@@ -10,14 +10,8 @@ module top_verilator (input logic clk_i, rst_ni);
 
   logic uart_sys_rx, uart_sys_tx;
 
-  logic jtag_trst;
-  logic jtag_tck;
-  logic jtag_tms;
-  logic jtag_tdi;
-  logic jtag_tdo;
-
   // Instantiating the Vicuna Demo System.
-  verilator_multicore #(
+  system_multicore #(
     .ClockFrequency ( ClockFrequency      ),
     .BaudRate       ( BaudRate            ),
     .RegFile        ( ibex_pkg::RegFileFF ),
@@ -31,14 +25,7 @@ module top_verilator (input logic clk_i, rst_ni);
 
     // uart
     .uart_rx_i (uart_sys_rx),
-    .uart_tx_o(uart_sys_tx),
-
-    // debug - jtag
-    .trst_ni(jtag_trst),
-    .tms_i  (jtag_tms),
-    .tck_i  (jtag_tck),
-    .td_i   (jtag_tdi),
-    .td_o   (jtag_tdo),
+    .uart_tx_o(uart_sys_tx)
 
   );
 
