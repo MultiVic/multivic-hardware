@@ -1,8 +1,6 @@
-CAPI: "2"
+CAPI=2:
 name: "ess-fzi:vicuna:multicore:0.0.1"
 description: "a multicore system with one management core and multiple ai accellerator cores"
-
-
 filesets:
   rtl:
     depend:
@@ -10,6 +8,16 @@ filesets:
     files:
       - "rtl/vicuna_multicore.sv"
     filetype: "systemVerilogSource"
+
+  verilator:
+    depend:
+      - "lowrisc:dv_dpi_c:uartdpi:0.1"
+    files:
+      - "simulation/top_verilator.sv": { file_type: systemVerilogSource }
+      - "simulation/verilator.cc" : { file_type: cppSource }
+      - "simulation/verilator.h":  { file_type: cppSource, is_include_file: true}
+    #  - "dv/verilator/vicuna_demo_system_main.cc" : { file_type: cppSource }
+    #  - dv/verilator/demo_system_verilator_lint.vlt:  { file_type: vlt }
 
 parameters:
   ScratchpadDataInitFile:
@@ -31,6 +39,8 @@ targets:
     <<: *default
     description: "Run the device in a simulation"
     default_tool: "verilator"
+    filesets_append:
+      - verilator
     toplevel: "top_verilator"
     tools:
       verilator:

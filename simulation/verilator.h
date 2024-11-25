@@ -5,15 +5,15 @@
 #include "verilated_toplevel.h"
 #include "verilator_memutil.h"
 
-class DemoSystem {
+class VicunaMulticore {
  public:
-  DemoSystem(const char *ram_hier_path, int ram_size_words);
-  virtual ~DemoSystem() {}
+  VicunaMulticore(const char *ram_hier_path, int ram_size_words);
+  virtual ~VicunaMulticore() {}
   virtual int Main(int argc, char **argv);
 
 
  protected:
-  top_verilator_vicuna _top;
+  top_verilator _top;
   VerilatorMemUtil _memutil;
   MemArea _ram;
 

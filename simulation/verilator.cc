@@ -20,17 +20,17 @@
 #include "vicuna_demo_system.h"
 
 int main(int argc, char **argv) {
-  DemoSystem demo_system(
+  VicunaMulticore demo_system(
       "TOP.top_verilator.u_vicuna_demo_system.u_sram.u_ram_1p.gen_generic.u_impl_generic",
       64 * 1024);
 
   return demo_system.Main(argc, argv);
 }
 
-DemoSystem::DemoSystem(const char *ram_hier_path, int ram_size_words)
+VicunaMulticore::VicunaMulticore(const char *ram_hier_path, int ram_size_words)
     : _ram(ram_hier_path, ram_size_words, 4) {}
 
-int DemoSystem::Main(int argc, char **argv) {
+int VicunaMulticore::Main(int argc, char **argv) {
   bool exit_app;
   int ret_code = Setup(argc, argv, exit_app);
 
@@ -47,7 +47,7 @@ int DemoSystem::Main(int argc, char **argv) {
   return 0;
 }
 
-int DemoSystem::Setup(int argc, char **argv, bool &exit_app) {
+int VicunaMulticore::Setup(int argc, char **argv, bool &exit_app) {
   VerilatorSimCtrl &simctrl = VerilatorSimCtrl::GetInstance();
 
   simctrl.SetTop(&_top, &_top.clk_i, &_top.rst_ni,
@@ -60,17 +60,17 @@ int DemoSystem::Setup(int argc, char **argv, bool &exit_app) {
   return simctrl.ParseCommandArgs(argc, argv, exit_app);
 }
 
-void DemoSystem::Run() {
+void VicunaMulticore::Run() {
   VerilatorSimCtrl &simctrl = VerilatorSimCtrl::GetInstance();
 
-  std::cout << "Simulation of Ibex Demo System" << std::endl
+  std::cout << "Simulation of Vicuna Multicore System" << std::endl
             << "==============================" << std::endl
             << std::endl;
 
   simctrl.RunSimulation();
 }
 
-bool DemoSystem::Finish() {
+bool VicunaMulticore::Finish() {
   VerilatorSimCtrl &simctrl = VerilatorSimCtrl::GetInstance();
 
   if (!simctrl.WasSimulationSuccessful()) {
