@@ -1,5 +1,8 @@
 module system #(
-    parameter ManagementCoreScratchpadData = "",
+    parameter int unsigned ClockFrequency   = 125_000_000,
+    parameter int unsigned BaudRate         = 115_200,
+    parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
+    parameter ManagementCoreScratchpadData  = "",
     parameter ManagementCoreScratchpadInstr = ""
 ) (
     input logic clk_sys_i,
