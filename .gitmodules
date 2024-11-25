@@ -1,3 +1,6 @@
 [submodule "submodules/vicuna"]
 	path = submodules/vicuna
 	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/vicuna.git
+[submodule "submodules/ibex"]
+	path = submodules/ibex
+	url = https://github.com/lowRISC/ibex
