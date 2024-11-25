@@ -24,25 +24,47 @@ tlul_pkg::tl_d2h_t management_scratchpad_instr_rsp;
 tlul_pkg::tl_h2d_t management_scratchpad_data_req;
 tlul_pkg::tl_d2h_t management_scratchpad_data_rsp;
 
+tlul_pkg::tl_h2d_t vicuna0_scratchpad_instr_req;
+tlul_pkg::tl_d2h_t vicuna0_scratchpad_instr_rsp;
+tlul_pkg::tl_h2d_t vicuna0_scratchpad_data_req;
+tlul_pkg::tl_d2h_t vicuna0_scratchpad_data_rsp;
+
+tlul_pkg::tl_h2d_t vicuna1_scratchpad_instr_req;
+tlul_pkg::tl_d2h_t vicuna1_scratchpad_instr_rsp;
+tlul_pkg::tl_h2d_t vicuna1_scratchpad_data_req;
+tlul_pkg::tl_d2h_t vicuna1_scratchpad_data_rsp;
+
 tlul_pkg::tl_h2d_t uart_req;
 tlul_pkg::tl_d2h_t uart_rsp;
 
 xbar_main #() u_xbar_main (
     .clk_main_i(clk_sys_i),
-    .rst_main_ni(srt_sys_ni),
+    .rst_main_ni(rst_sys_ni),
 
-    .tl_management_core_instr_req(management_core_instr_req),
-    .tl_management_core_instr_rsp(management_core_instr_rsp),
-    .tl_management_core_data_req(management_core_data_req),
-    .tl_management_core_data_rsp(management_core_data_rsp),
+    .tl_management_core_instr_i(management_core_instr_req),
+    .tl_management_core_instr_o(management_core_instr_rsp),
+    .tl_management_core_data_i(management_core_data_req),
+    .tl_management_core_data_o(management_core_data_rsp),
 
-    .tl_management_scratchpad_instr_req(management_scratchpad_instr_req),
-    .tl_management_scratchpad_instr_rsp(management_scratchpad_instr_rsp),
-    .tl_management_scratchpad_data_req(management_scratchpad_data_req),
-    .tl_management_scratchpad_data_rsp(management_scratchpad_data_rsp),
+    .tl_management_scratchpad_instr_o(management_scratchpad_instr_req),
+    .tl_management_scratchpad_instr_i(management_scratchpad_instr_rsp),
+    .tl_management_scratchpad_data_o(management_scratchpad_data_req),
+    .tl_management_scratchpad_data_i(management_scratchpad_data_rsp),
 
-    .tl_uart_req(uart_req),
-    .tl_uart_rsp(uart_rsp)
+    .tl_vicuna0_scratchpad_instr_o(vicuna0_scratchpad_instr_req),
+    .tl_vicuna0_scratchpad_instr_i(vicuna0_scratchpad_instr_rsp),
+    .tl_vicuna0_scratchpad_data_o(vicuna0_scratchpad_data_req),
+    .tl_vicuna0_scratchpad_data_i(vicuna0_scratchpad_data_rsp),
+
+    .tl_vicuna1_scratchpad_instr_o(vicuna1_scratchpad_instr_req),
+    .tl_vicuna1_scratchpad_instr_i(vicuna1_scratchpad_instr_rsp),
+    .tl_vicuna1_scratchpad_data_o(vicuna1_scratchpad_data_req),
+    .tl_vicuna1_scratchpad_data_i(vicuna1_scratchpad_data_rsp),
+
+    .tl_uart_o(uart_req),
+    .tl_uart_i(uart_rsp),
+
+    .scanmode_i()
 );
 
   rv_core_ibex #(
@@ -106,7 +128,7 @@ xbar_main #() u_xbar_main (
       .fpga_info_i(),
       .corei_tl_h_o(management_core_instr_req),
       .corei_tl_h_i(management_core_instr_rsp),
-      .cored_tl_h_o(management_core_instr_rsp),
+      .cored_tl_h_o(management_core_instr_req),
       .cored_tl_h_i(management_core_instr_rsp),
       .cfg_tl_d_i(),
       .cfg_tl_d_o(),
