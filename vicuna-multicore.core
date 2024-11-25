@@ -5,6 +5,8 @@ description: "a multicore system with one management core and multiple ai accell
 
 filesets:
   rtl:
+    depend:
+      - "lowrisc:ip:rv_core_ibex:0.1"
     files:
       - "rtl/vicuna_multicore.sv"
     filetype: "systemVerilogSource"
