@@ -5,13 +5,15 @@ filesets:
   rtl:
     depend:
       - "lowrisc:ip:rv_core_ibex:0.1"
+      - "lowrisc:ip:xbar_main:0.1"
     files:
-      - "rtl/vicuna_multicore.sv"
-    filetype: "systemVerilogSource"
+      - "src/system.sv"
+    file_type: "systemVerilogSource"
 
   verilator:
     depend:
       - "lowrisc:dv_dpi_c:uartdpi:0.1"
+      - "lowrisc:dv_dpi_sv:uartdpi:0.1"
     files:
       - "simulation/top_verilator.sv": { file_type: systemVerilogSource }
       - "simulation/verilator.cc" : { file_type: cppSource }
@@ -38,9 +40,9 @@ targets:
   sim:
     <<: *default
     description: "Run the device in a simulation"
-    default_tool: "verilator"
     filesets_append:
-      - verilator
+    - verilator
+    default_tool: "verilator"
     toplevel: "top_verilator"
     tools:
       verilator:
