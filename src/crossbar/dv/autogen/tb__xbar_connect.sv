@@ -20,6 +20,7 @@ initial force dut.rst_main_ni = rst_n;
 // Device TileLink interface connections
 `CONNECT_TL_DEVICE_IF(management_scratchpad_instr, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(management_scratchpad_data, dut, clk_main_i, rst_n)
+`CONNECT_TL_DEVICE_IF(uart, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(vicuna0_scratchpad_instr, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(vicuna0_scratchpad_data, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(vicuna1_scratchpad_instr, dut, clk_main_i, rst_n)

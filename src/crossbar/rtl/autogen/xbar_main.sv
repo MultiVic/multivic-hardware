@@ -9,12 +9,13 @@
 // management_core_instr
 //   -> management_scratchpad_instr
 // management_core_data
-//   -> s1n_8
+//   -> s1n_9
 //     -> management_scratchpad_data
 //     -> vicuna0_scratchpad_data
 //     -> vicuna0_scratchpad_instr
 //     -> vicuna1_scratchpad_data
 //     -> vicuna1_scratchpad_instr
+//     -> uart
 
 module xbar_main (
   input clk_main_i,
@@ -31,6 +32,8 @@ module xbar_main (
   input  tlul_pkg::tl_d2h_t tl_management_scratchpad_instr_i,
   output tlul_pkg::tl_h2d_t tl_management_scratchpad_data_o,
   input  tlul_pkg::tl_d2h_t tl_management_scratchpad_data_i,
+  output tlul_pkg::tl_h2d_t tl_uart_o,
+  input  tlul_pkg::tl_d2h_t tl_uart_i,
   output tlul_pkg::tl_h2d_t tl_vicuna0_scratchpad_instr_o,
   input  tlul_pkg::tl_d2h_t tl_vicuna0_scratchpad_instr_i,
   output tlul_pkg::tl_h2d_t tl_vicuna0_scratchpad_data_o,
@@ -51,61 +54,68 @@ module xbar_main (
   logic unused_scanmode;
   assign unused_scanmode = ^scanmode_i;
 
-  tl_h2d_t tl_s1n_8_us_h2d ;
-  tl_d2h_t tl_s1n_8_us_d2h ;
+  tl_h2d_t tl_s1n_9_us_h2d ;
+  tl_d2h_t tl_s1n_9_us_d2h ;
 
 
-  tl_h2d_t tl_s1n_8_ds_h2d [5];
-  tl_d2h_t tl_s1n_8_ds_d2h [5];
+  tl_h2d_t tl_s1n_9_ds_h2d [6];
+  tl_d2h_t tl_s1n_9_ds_d2h [6];
 
   // Create steering signal
-  logic [2:0] dev_sel_s1n_8;
+  logic [2:0] dev_sel_s1n_9;
 
 
 
-  assign tl_management_scratchpad_data_o = tl_s1n_8_ds_h2d[0];
-  assign tl_s1n_8_ds_d2h[0] = tl_management_scratchpad_data_i;
+  assign tl_management_scratchpad_data_o = tl_s1n_9_ds_h2d[0];
+  assign tl_s1n_9_ds_d2h[0] = tl_management_scratchpad_data_i;
 
-  assign tl_vicuna0_scratchpad_data_o = tl_s1n_8_ds_h2d[1];
-  assign tl_s1n_8_ds_d2h[1] = tl_vicuna0_scratchpad_data_i;
+  assign tl_vicuna0_scratchpad_data_o = tl_s1n_9_ds_h2d[1];
+  assign tl_s1n_9_ds_d2h[1] = tl_vicuna0_scratchpad_data_i;
 
-  assign tl_vicuna0_scratchpad_instr_o = tl_s1n_8_ds_h2d[2];
-  assign tl_s1n_8_ds_d2h[2] = tl_vicuna0_scratchpad_instr_i;
+  assign tl_vicuna0_scratchpad_instr_o = tl_s1n_9_ds_h2d[2];
+  assign tl_s1n_9_ds_d2h[2] = tl_vicuna0_scratchpad_instr_i;
 
-  assign tl_vicuna1_scratchpad_data_o = tl_s1n_8_ds_h2d[3];
-  assign tl_s1n_8_ds_d2h[3] = tl_vicuna1_scratchpad_data_i;
+  assign tl_vicuna1_scratchpad_data_o = tl_s1n_9_ds_h2d[3];
+  assign tl_s1n_9_ds_d2h[3] = tl_vicuna1_scratchpad_data_i;
 
-  assign tl_vicuna1_scratchpad_instr_o = tl_s1n_8_ds_h2d[4];
-  assign tl_s1n_8_ds_d2h[4] = tl_vicuna1_scratchpad_instr_i;
+  assign tl_vicuna1_scratchpad_instr_o = tl_s1n_9_ds_h2d[4];
+  assign tl_s1n_9_ds_d2h[4] = tl_vicuna1_scratchpad_instr_i;
+
+  assign tl_uart_o = tl_s1n_9_ds_h2d[5];
+  assign tl_s1n_9_ds_d2h[5] = tl_uart_i;
 
   assign tl_management_scratchpad_instr_o = tl_management_core_instr_i;
   assign tl_management_core_instr_o = tl_management_scratchpad_instr_i;
 
-  assign tl_s1n_8_us_h2d = tl_management_core_data_i;
-  assign tl_management_core_data_o = tl_s1n_8_us_d2h;
+  assign tl_s1n_9_us_h2d = tl_management_core_data_i;
+  assign tl_management_core_data_o = tl_s1n_9_us_d2h;
 
   always_comb begin
     // default steering to generate error response if address is not within the range
-    dev_sel_s1n_8 = 3'd5;
-    if ((tl_s1n_8_us_h2d.a_address &
+    dev_sel_s1n_9 = 3'd6;
+    if ((tl_s1n_9_us_h2d.a_address &
          ~(ADDR_MASK_MANAGEMENT_SCRATCHPAD_DATA)) == ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA) begin
-      dev_sel_s1n_8 = 3'd0;
+      dev_sel_s1n_9 = 3'd0;
 
-    end else if ((tl_s1n_8_us_h2d.a_address &
+    end else if ((tl_s1n_9_us_h2d.a_address &
                   ~(ADDR_MASK_VICUNA0_SCRATCHPAD_DATA)) == ADDR_SPACE_VICUNA0_SCRATCHPAD_DATA) begin
-      dev_sel_s1n_8 = 3'd1;
+      dev_sel_s1n_9 = 3'd1;
 
-    end else if ((tl_s1n_8_us_h2d.a_address &
+    end else if ((tl_s1n_9_us_h2d.a_address &
                   ~(ADDR_MASK_VICUNA0_SCRATCHPAD_INSTR)) == ADDR_SPACE_VICUNA0_SCRATCHPAD_INSTR) begin
-      dev_sel_s1n_8 = 3'd2;
+      dev_sel_s1n_9 = 3'd2;
 
-    end else if ((tl_s1n_8_us_h2d.a_address &
+    end else if ((tl_s1n_9_us_h2d.a_address &
                   ~(ADDR_MASK_VICUNA1_SCRATCHPAD_DATA)) == ADDR_SPACE_VICUNA1_SCRATCHPAD_DATA) begin
-      dev_sel_s1n_8 = 3'd3;
+      dev_sel_s1n_9 = 3'd3;
 
-    end else if ((tl_s1n_8_us_h2d.a_address &
+    end else if ((tl_s1n_9_us_h2d.a_address &
                   ~(ADDR_MASK_VICUNA1_SCRATCHPAD_INSTR)) == ADDR_SPACE_VICUNA1_SCRATCHPAD_INSTR) begin
-      dev_sel_s1n_8 = 3'd4;
+      dev_sel_s1n_9 = 3'd4;
+
+    end else if ((tl_s1n_9_us_h2d.a_address &
+                  ~(ADDR_MASK_UART)) == ADDR_SPACE_UART) begin
+      dev_sel_s1n_9 = 3'd5;
 end
   end
 
@@ -114,17 +124,17 @@ end
   tlul_socket_1n #(
     .HReqDepth (4'h0),
     .HRspDepth (4'h0),
-    .DReqDepth (20'h0),
-    .DRspDepth (20'h0),
-    .N         (5)
-  ) u_s1n_8 (
+    .DReqDepth (24'h0),
+    .DRspDepth (24'h0),
+    .N         (6)
+  ) u_s1n_9 (
     .clk_i        (clk_main_i),
     .rst_ni       (rst_main_ni),
-    .tl_h_i       (tl_s1n_8_us_h2d),
-    .tl_h_o       (tl_s1n_8_us_d2h),
-    .tl_d_o       (tl_s1n_8_ds_h2d),
-    .tl_d_i       (tl_s1n_8_ds_d2h),
-    .dev_select_i (dev_sel_s1n_8)
+    .tl_h_i       (tl_s1n_9_us_h2d),
+    .tl_h_o       (tl_s1n_9_us_d2h),
+    .tl_d_o       (tl_s1n_9_ds_h2d),
+    .tl_d_i       (tl_s1n_9_ds_d2h),
+    .dev_select_i (dev_sel_s1n_9)
   );
 
 endmodule

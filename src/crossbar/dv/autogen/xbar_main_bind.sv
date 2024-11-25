@@ -32,6 +32,12 @@ module xbar_main_bind;
     .h2d    (tl_management_scratchpad_data_o),
     .d2h    (tl_management_scratchpad_data_i)
   );
+  bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_uart (
+    .clk_i  (clk_main_i),
+    .rst_ni (rst_main_ni),
+    .h2d    (tl_uart_o),
+    .d2h    (tl_uart_i)
+  );
   bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_vicuna0_scratchpad_instr (
     .clk_i  (clk_main_i),
     .rst_ni (rst_main_ni),

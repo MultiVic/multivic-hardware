@@ -13,6 +13,9 @@ tl_device_t xbar_devices[$] = '{
     '{"management_scratchpad_data", '{
         '{32'h00100000, 32'h0010ffff}
     }},
+    '{"uart", '{
+        '{32'h00800000, 32'h00800fff}
+    }},
     '{"vicuna0_scratchpad_instr", '{
         '{32'h00200000, 32'h0020ffff}
     }},
@@ -35,5 +38,6 @@ tl_host_t xbar_hosts[$] = '{
         "vicuna0_scratchpad_data",
         "vicuna0_scratchpad_instr",
         "vicuna1_scratchpad_data",
-        "vicuna1_scratchpad_instr"}}
+        "vicuna1_scratchpad_instr",
+        "uart"}}
 };
