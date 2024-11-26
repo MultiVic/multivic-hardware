@@ -64,6 +64,10 @@ targets:
           - '-Wno-WIDTHTRUNC'
           - '-Wno-MULTIDRIVEN'
             # TODO: loo how to remove widthtrunc and multidriven
+            # aperrantly, the vicuna-demo-system works with a different version of
+            # verilog, as this one does not allow Width truncation and multidriven
+            # signals by default. However, the opentitan code makes use of these
+            # 'features', meaning those errors need to be disabled
     parameters: 
       - PRIM_DEFAULT_IMPL=prim_pkg::ImplGeneric
     flags:
