@@ -81,23 +81,23 @@ xbar_main #() u_xbar_main (
 
     .tl_management_core_instr_i(management_core_instr_req),
     .tl_management_core_instr_o(management_core_instr_rsp),
-    .tl_management_core_data_i(management_core_data_req),
-    .tl_management_core_data_o(management_core_data_rsp),
+    .tl_management_core_data_i (management_core_data_req),
+    .tl_management_core_data_o (management_core_data_rsp),
 
     .tl_management_scratchpad_instr_o(management_scratchpad_instr_req),
     .tl_management_scratchpad_instr_i(management_scratchpad_instr_rsp),
-    .tl_management_scratchpad_data_o(management_scratchpad_data_req),
-    .tl_management_scratchpad_data_i(management_scratchpad_data_rsp),
+    .tl_management_scratchpad_data_o (management_scratchpad_data_req),
+    .tl_management_scratchpad_data_ii (management_scratchpad_data_rsp),
 
     .tl_vicuna0_scratchpad_instr_o(vicuna0_scratchpad_instr_req),
     .tl_vicuna0_scratchpad_instr_i(vicuna0_scratchpad_instr_rsp),
-    .tl_vicuna0_scratchpad_data_o(vicuna0_scratchpad_data_req),
-    .tl_vicuna0_scratchpad_data_i(vicuna0_scratchpad_data_rsp),
+    .tl_vicuna0_scratchpad_data_o (vicuna0_scratchpad_data_req),
+    .tl_vicuna0_scratchpad_data_i (vicuna0_scratchpad_data_rsp),
 
     .tl_vicuna1_scratchpad_instr_o(vicuna1_scratchpad_instr_req),
     .tl_vicuna1_scratchpad_instr_i(vicuna1_scratchpad_instr_rsp),
-    .tl_vicuna1_scratchpad_data_o(vicuna1_scratchpad_data_req),
-    .tl_vicuna1_scratchpad_data_i(vicuna1_scratchpad_data_rsp),
+    .tl_vicuna1_scratchpad_data_o (vicuna1_scratchpad_data_req),
+    .tl_vicuna1_scratchpad_data_i (vicuna1_scratchpad_data_rsp),
 
     .tl_uart_o(uart_req),
     .tl_uart_i(uart_rsp),
@@ -107,35 +107,11 @@ xbar_main #() u_xbar_main (
 
 // --- management core ---
 rv_core_ibex #(
-//    .AlertAsyncOn(),
-//    .RndCnstLfsrSeed(),
-//    .RndCnstLfsrPerm(),
-//    .RndCnstIbexKeyDefault(),
-//    .RndCnstIbexNonceDefault(),
     .PMPEnable('b0),
-//    .PMPGranularity(),
-//    .PMPNumRegions(),
     .MHPMCounterNum( 10),
-//    .MHPMCounterWidth(),
-//    .PMPRstCfg(),
-//    .PMPRstAddr(),
-//    .PMPRstMsecCfg(),
-//    .RV32E(),
-//    .RV32M(),
-//    .RV32B(),
     .RegFile(RegFile),
-//    .BranchTargetALU(),
-//    .WritebackStage(),
     .ICache('b0),
-    .ICacheECC('b0),
-    .ICacheScramble('b0),
-//    .BranchPredictor(),
-//    .DbgTriggerEn(),
-//    .DbgHwBreakNum(),
     .SecureIbex('b0)
-//    .DmHaltAddr(),
-//    .DmExceptionAddr(),
-//    .PipeLine()
 ) management_core_ibex (
     .alert_tx_o  (),
     .alert_rx_i  (),
@@ -172,26 +148,24 @@ rv_core_ibex #(
 
     // Clock and reset connections
     .clk_i (clk_sys_i),
-    .clk_edn_i (),
-    .clk_esc_i (),
-    .clk_otp_i (),
     .rst_ni (rst_sys_ni),
-    .rst_edn_ni ('b1),
-    .rst_esc_ni ('b1),
-    .rst_otp_ni ('b1)
+    .rst_edn_ni('b1), // TODO: look wether those can be removed
+    .rst_esc_ni('b1),
+    .rst_otp_ni('b1)
 );
 
 // --- scratchpad management ---
 sram #(
-    .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadInstr)
+    .MemSize    (64 * 1024), // 64 KiB
+    .MemInitFile(ManagementCoreScratchpadInstr)
 ) management_scratchpad_instr (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4True),
-    .tl_a_req_i (management_scratchpad_instr_req),
-    .tl_a_rsp_o (management_scratchpad_instr_rsp)
+
+    .tl_a_req_i(management_scratchpad_instr_req),
+    .tl_a_rsp_o(management_scratchpad_instr_rsp)
     );
 
 sram #(
@@ -202,11 +176,12 @@ sram #(
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
-    .tl_a_req_i (management_scratchpad_data_req),
-    .tl_a_rsp_o (management_scratchpad_data_rsp)
+
+    .tl_a_req_i(management_scratchpad_data_req),
+    .tl_a_rsp_o(management_scratchpad_data_rsp)
 );
 
-// --- uart for management core ---
+// --- uart interface for management core ---
 simple_uart #(
     .ClockFrequency (ClockFrequency),
     .BaudRate       (BaudRate)
@@ -216,13 +191,30 @@ simple_uart #(
 
     .uart_rx_i(uart_rx_i),
     .uart_tx_o(uart_tx_o),
-    .uart_irq_o(), // TODO connect to vicuna interrupt inputs
 
     .tl_i(uart_req),
     .tl_o(uart_rsp)
 );
 
+// --- vicuna0 core
+rv_core_vicuna #(
+    .RegFile(RegFileVicuna),
+    .MEM_W(32),
+    .VMEM_W(32),
+    .VREG_TYPE(VRegType),
+    .MUL_TYPE(MulType)
+) vicuna0_core (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
 
+    // Instruction memory interface
+    .corei_tl_h_o(vicuna0_core_instr_req),
+    .corei_tl_h_i(vicuna0_core_instr_rsp),
+
+    // Data memory interface
+    .cored_tl_h_o(vicuna0_core_data_req),
+    .cored_tl_h_i(vicuna0_core_data_rsp)
+);
 
 // --- scratchpad vicuna0 ---
 sram #(
@@ -233,10 +225,11 @@ sram #(
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4True),
-    .tl_a_req_i (vicuna0_scratchpad_instr_req),
-    .tl_a_rsp_o (vicuna0_scratchpad_instr_rsp),
-    .tl_b_req_i (vicuna0_core_instr_req),
-    .tl_b_rsp_o (vicuna0_core_instr_rsp)
+
+    .tl_a_req_i(vicuna0_scratchpad_instr_req),
+    .tl_a_rsp_o(vicuna0_scratchpad_instr_rsp),
+    .tl_b_req_i(vicuna0_core_instr_req),
+    .tl_b_rsp_o(vicuna0_core_instr_rsp)
 );
 
 sram #(
@@ -247,42 +240,11 @@ sram #(
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
-    .tl_a_req_i (vicuna0_scratchpad_data_req),
-    .tl_a_rsp_o (vicuna0_scratchpad_data_rsp),
-    .tl_b_req_i (vicuna0_core_data_req),
-    .tl_b_rsp_o (vicuna0_core_data_rsp)
+
+    .tl_a_req_i(vicuna0_scratchpad_data_req),
+    .tl_a_rsp_o(vicuna0_scratchpad_data_rsp),
+    .tl_b_req_i(vicuna0_core_data_req),
+    .tl_b_rsp_o(vicuna0_core_data_rsp)
 );
 
-rv_core_vicuna #(
-    .RegFile ( RegFileVicuna ),
-    .MEM_W  (32),
-    .VMEM_W (32),
-    .VREG_TYPE    ( VRegType ),
-    .MUL_TYPE     ( MulType )
-//    .DbgTriggerEn    ( 1'b1             ),
-//    .DbgHwBreakNum   ( 2                ),
-//    .DmHaltAddr      ( DEBUG_START + dm::HaltAddress[31:0]     ),
-//    .DmExceptionAddr ( DEBUG_START + dm::ExceptionAddress[31:0])
-) vicuna0_core (
-    .clk_i (clk_sys_i),
-    .rst_ni(rst_sys_ni),
-
-    // Instruction memory interface
-    .corei_tl_h_o ( vicuna0_core_instr_req),
-    .corei_tl_h_i ( vicuna0_core_instr_rsp),
-
-    // Data memory interface
-    .cored_tl_h_o ( vicuna0_core_data_req),
-    .cored_tl_h_i ( vicuna0_core_data_rsp),
-
-    // Interrupts
-    .irq_software_i (1'b0),
-//    .irq_timer_i    (timer_irq),
-    .irq_external_i (1'b0),
-    .irq_fast_i     (15'b0),
-    .irq_nm_i       (1'b0)
-
-    // Debug interface
-//    .debug_req_i    (dm_debug_req)
-);
 endmodule
