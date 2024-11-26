@@ -15,8 +15,8 @@ module top_verilator (input logic clk_i, rst_ni);
     .ClockFrequency ( ClockFrequency      ),
     .BaudRate       ( BaudRate            ),
     .RegFile        ( ibex_pkg::RegFileFF ),
-    .ManagementCoreScratchpadData  ( "/home/krusekamp/vicuna-software/build/sram/managementCoreInstr.vmem"),
-    .ManagementCoreScratchpadInstr ( "/home/krusekamp/vicuna-software/build/sram/managementCoreData.vmem" )
+    .ManagementCoreScratchpadData  ( "/home/krusekamp/vicuna-software/build/sram/ManagementCoreInstr.vmem"),
+    .ManagementCoreScratchpadInstr ( "/home/krusekamp/vicuna-software/build/sram/ManagementCoreData.vmem" )
 
   ) u_verilator_multicore (
     // sys signals
