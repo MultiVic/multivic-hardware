@@ -34,6 +34,17 @@ tlul_pkg::tl_d2h_t vicuna1_scratchpad_instr_rsp;
 tlul_pkg::tl_h2d_t vicuna1_scratchpad_data_req;
 tlul_pkg::tl_d2h_t vicuna1_scratchpad_data_rsp;
 
+
+tlul_pkg::tl_h2d_t vicuna0_core_instr_req;
+tlul_pkg::tl_d2h_t vicuna0_core_instr_rsp;
+tlul_pkg::tl_h2d_t vicuna0_core_data_req;
+tlul_pkg::tl_d2h_t vicuna0_core_data_rsp;
+
+tlul_pkg::tl_h2d_t vicuna1_core_instr_req;
+tlul_pkg::tl_d2h_t vicuna1_core_instr_rsp;
+tlul_pkg::tl_h2d_t vicuna1_core_data_req;
+tlul_pkg::tl_d2h_t vicuna1_core_data_rsp;
+
 tlul_pkg::tl_h2d_t uart_req;
 tlul_pkg::tl_d2h_t uart_rsp;
 
@@ -204,25 +215,62 @@ sram #(
 // --- scratchpad vicuna0 ---
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile ()
+    .MemInitFile (ManagementCoreScratchpadInstr)
 ) vicuna0_scratchpad_instr (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4True),
     .tl_a_req_i (vicuna0_scratchpad_instr_req),
-    .tl_a_rsp_o (vicuna0_scratchpad_instr_rsp)
+    .tl_a_rsp_o (vicuna0_scratchpad_instr_rsp),
+    .tl_b_req_i (vicuna0_core_instr_req),
+    .tl_b_rsp_o (vicuna0_core_instr_rsp)
 );
 
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile ()
+    .MemInitFile (ManagementCoreScratchpadData)
 ) vicuna0_scratchpad_data (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
     .tl_a_req_i (vicuna0_scratchpad_data_req),
-    .tl_a_rsp_o (vicuna0_scratchpad_data_rsp)
+    .tl_a_rsp_o (vicuna0_scratchpad_data_rsp),
+    .tl_b_req_i (vicuna0_core_data_req),
+    .tl_b_rsp_o (vicuna0_core_data_rsp)
+);
+
+rv_core_vicuna #(
+    //.RegFile ( RegFile ),
+    .MEM_W  (32),
+    .VMEM_W (32)
+//    .VREG_TYPE    ( VRegType ),
+//    .MUL_TYPE     ( MulType ),
+//    .DbgTriggerEn    ( 1'b1             ),
+//    .DbgHwBreakNum   ( 2                ),
+//    .DmHaltAddr      ( DEBUG_START + dm::HaltAddress[31:0]     ),
+//    .DmExceptionAddr ( DEBUG_START + dm::ExceptionAddress[31:0])
+) vicuna0_core (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    // Instruction memory interface
+    .corei_tl_h_o ( vicuna0_core_instr_req),
+    .corei_tl_h_i ( vicuna0_core_instr_rsp),
+
+    // Data memory interface
+    .cored_tl_h_o ( vicuna0_core_data_req),
+    .cored_tl_h_i ( vicuna0_core_data_rsp),
+
+    // Interrupts
+    .irq_software_i (1'b0),
+//    .irq_timer_i    (timer_irq),
+    .irq_external_i (1'b0),
+    .irq_fast_i     (15'b0),
+    .irq_nm_i       (1'b0)
+
+    // Debug interface
+//    .debug_req_i    (dm_debug_req)
 );
 endmodule
