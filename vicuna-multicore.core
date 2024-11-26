@@ -7,6 +7,7 @@ filesets:
       - "lowrisc:ip:rv_core_ibex:0.1"
       - "lowrisc:ip:xbar_main:0.1"
       - "fzi:ip:simple_uart"
+      - "fzi:ip:sram:0.1"
     files:
       - "src/system.sv"
     file_type: "systemVerilogSource"
@@ -57,18 +58,24 @@ targets:
       verilator:
         mode: "cc"
         verilator_options:
+          # --- tracing ---
+          - '--trace'
+          - '--trace-fst' # requires -DVM_TRACE_FMT_FST in CFLAGS
+          - '--trace-structs'
+          - '--trace-params'
+          - '--trace-max-array 1024'
+
           - '-CFLAGS "-std=c++14 -Wall -DVM_TRACE_FMT_FST -DTOPLEVEL_NAME=top_verilator"'
           - '-LDFLAGS "-pthread -lutil -lelf"'
           - '-Wno-PINMISSING'
           - '-Wno-WIDTHEXPAND'
           - '-Wno-UNSIGNED'
+          # aperrantly, the vicuna-demo-system works with a different version of
+          # verilog, as this one does not allow Width truncation and multidriven
+          # signals by default. However, the opentitan code makes use of these
+          # 'features', meaning those errors need to be disabled
           - '-Wno-WIDTHTRUNC'
           - '-Wno-MULTIDRIVEN'
-            # TODO: loo how to remove widthtrunc and multidriven
-            # aperrantly, the vicuna-demo-system works with a different version of
-            # verilog, as this one does not allow Width truncation and multidriven
-            # signals by default. However, the opentitan code makes use of these
-            # 'features', meaning those errors need to be disabled
     parameters: 
       - PRIM_DEFAULT_IMPL=prim_pkg::ImplGeneric
     flags:
