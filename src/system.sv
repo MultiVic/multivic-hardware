@@ -68,35 +68,35 @@ xbar_main #() u_xbar_main (
 );
 
 rv_core_ibex #(
-    .AlertAsyncOn(),
-    .RndCnstLfsrSeed(),
-    .RndCnstLfsrPerm(),
-    .RndCnstIbexKeyDefault(),
-    .RndCnstIbexNonceDefault(),
-    .PMPEnable(),
-    .PMPGranularity(),
-    .PMPNumRegions(),
-    .MHPMCounterNum(),
-    .MHPMCounterWidth(),
-    .PMPRstCfg(),
-    .PMPRstAddr(),
-    .PMPRstMsecCfg(),
-    .RV32E(),
-    .RV32M(),
-    .RV32B(),
+//    .AlertAsyncOn(),
+//    .RndCnstLfsrSeed(),
+//    .RndCnstLfsrPerm(),
+//    .RndCnstIbexKeyDefault(),
+//    .RndCnstIbexNonceDefault(),
+//    .PMPEnable(),
+//    .PMPGranularity(),
+//    .PMPNumRegions(),
+    .MHPMCounterNum( 10),
+//    .MHPMCounterWidth(),
+//    .PMPRstCfg(),
+//    .PMPRstAddr(),
+//    .PMPRstMsecCfg(),
+//    .RV32E(),
+//    .RV32M(),
+//    .RV32B(),
     .RegFile(RegFile),
-    .BranchTargetALU(),
-    .WritebackStage(),
-    .ICache(),
-    .ICacheECC(),
-    .ICacheScramble(),
-    .BranchPredictor(),
-    .DbgTriggerEn(),
-    .DbgHwBreakNum(),
-    .SecureIbex(),
-    .DmHaltAddr(),
-    .DmExceptionAddr(),
-    .PipeLine()
+//    .BranchTargetALU(),
+//    .WritebackStage(),
+    .ICache('b0),
+    .ICacheECC('b0),
+    .ICacheScramble('b0),
+//    .BranchPredictor(),
+//    .DbgTriggerEn(),
+//    .DbgHwBreakNum(),
+    .SecureIbex('b0)
+//    .DmHaltAddr(),
+//    .DmExceptionAddr(),
+//    .PipeLine()
 ) management_core_ibex (
     // [61]: fatal_sw_err
     // [62]: recov_sw_err
@@ -108,8 +108,8 @@ rv_core_ibex #(
     // Inter-module signals
     .rst_cpu_n_o(),
     .ram_cfg_i(),
-    .hart_id_i(),
-    .boot_addr_i(),
+    .hart_id_i(32'h0),
+    .boot_addr_i(32'h0),
     .irq_software_i(),
     .irq_timer_i(),
     .irq_external_i(),
@@ -133,7 +133,7 @@ rv_core_ibex #(
     .cfg_tl_d_i(),
     .cfg_tl_d_o(),
     .scanmode_i(),
-    .scan_rst_ni(),
+    .scan_rst_ni('b1),
 
     // Clock and reset connections
     .clk_i (clk_sys_i),
@@ -141,9 +141,9 @@ rv_core_ibex #(
     .clk_esc_i (),
     .clk_otp_i (),
     .rst_ni (rst_sys_ni),
-    .rst_edn_ni ('b0),
-    .rst_esc_ni ('b0),
-    .rst_otp_ni ('b0)
+    .rst_edn_ni ('b1),
+    .rst_esc_ni ('b1),
+    .rst_otp_ni ('b1)
 );
 
 `ifdef VERILATOR
