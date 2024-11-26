@@ -73,7 +73,7 @@ rv_core_ibex #(
 //    .RndCnstLfsrPerm(),
 //    .RndCnstIbexKeyDefault(),
 //    .RndCnstIbexNonceDefault(),
-//    .PMPEnable(),
+    .PMPEnable('b0),
 //    .PMPGranularity(),
 //    .PMPNumRegions(),
     .MHPMCounterNum( 10),
