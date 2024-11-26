@@ -67,7 +67,7 @@ xbar_main #() u_xbar_main (
     .scanmode_i()
 );
 
-  rv_core_ibex #(
+rv_core_ibex #(
     .AlertAsyncOn(),
     .RndCnstLfsrSeed(),
     .RndCnstLfsrPerm(),
@@ -97,55 +97,69 @@ xbar_main #() u_xbar_main (
     .DmHaltAddr(),
     .DmExceptionAddr(),
     .PipeLine()
-  ) management_core_ibex (
-      // [61]: fatal_sw_err
-      // [62]: recov_sw_err
-      // [63]: fatal_hw_err
-      // [64]: recov_hw_err
-      .alert_tx_o  (),
-      .alert_rx_i  (),
+) management_core_ibex (
+    // [61]: fatal_sw_err
+    // [62]: recov_sw_err
+    // [63]: fatal_hw_err
+    // [64]: recov_hw_err
+    .alert_tx_o  (),
+    .alert_rx_i  (),
 
-      // Inter-module signals
-      .rst_cpu_n_o(),
-      .ram_cfg_i(),
-      .hart_id_i(),
-      .boot_addr_i(),
-      .irq_software_i(),
-      .irq_timer_i(),
-      .irq_external_i(),
-      .esc_tx_i(),
-      .esc_rx_o(),
-      .debug_req_i(),
-      .crash_dump_o(),
-      .lc_cpu_en_i(),
-      .pwrmgr_cpu_en_i(),
-      .pwrmgr_o(),
-      .nmi_wdog_i(),
-      .edn_o(),
-      .edn_i(),
-      .icache_otp_key_o(),
-      .icache_otp_key_i(),
-      .fpga_info_i(),
-      .corei_tl_h_o(management_core_instr_req),
-      .corei_tl_h_i(management_core_instr_rsp),
-      .cored_tl_h_o(management_core_instr_req),
-      .cored_tl_h_i(management_core_instr_rsp),
-      .cfg_tl_d_i(),
-      .cfg_tl_d_o(),
-      .scanmode_i(),
-      .scan_rst_ni(),
+    // Inter-module signals
+    .rst_cpu_n_o(),
+    .ram_cfg_i(),
+    .hart_id_i(),
+    .boot_addr_i(),
+    .irq_software_i(),
+    .irq_timer_i(),
+    .irq_external_i(),
+    .esc_tx_i(),
+    .esc_rx_o(),
+    .debug_req_i(),
+    .crash_dump_o(),
+    .lc_cpu_en_i(),
+    .pwrmgr_cpu_en_i(),
+    .pwrmgr_o(),
+    .nmi_wdog_i(),
+    .edn_o(),
+    .edn_i(),
+    .icache_otp_key_o(),
+    .icache_otp_key_i(),
+    .fpga_info_i(),
+    .corei_tl_h_o(management_core_instr_req),
+    .corei_tl_h_i(management_core_instr_rsp),
+    .cored_tl_h_o(management_core_data_req),
+    .cored_tl_h_i(management_core_data_rsp),
+    .cfg_tl_d_i(),
+    .cfg_tl_d_o(),
+    .scanmode_i(),
+    .scan_rst_ni(),
 
-      // Clock and reset connections
-      .clk_i (clk_sys_i),
-      .clk_edn_i (),
-      .clk_esc_i (),
-      .clk_otp_i (),
-      .rst_ni (rst_sys_ni),
-      .rst_edn_ni ('b0),
-      .rst_esc_ni ('b0),
-      .rst_otp_ni ('b0)
-  );
+    // Clock and reset connections
+    .clk_i (clk_sys_i),
+    .clk_edn_i (),
+    .clk_esc_i (),
+    .clk_otp_i (),
+    .rst_ni (rst_sys_ni),
+    .rst_edn_ni ('b0),
+    .rst_esc_ni ('b0),
+    .rst_otp_ni ('b0)
+);
 
+`ifdef VERILATOR
+
+  export "DPI-C" function mhpmcounter_num;
+
+  function automatic int unsigned mhpmcounter_num();
+    return management_core_ibex.u_core.u_ibex_core.cs_registers_i.MHPMCounterNum;
+  endfunction
+
+  export "DPI-C" function mhpmcounter_get;
+
+  function automatic longint unsigned mhpmcounter_get(int index);
+    return management_core_ibex.u_core.u_ibex_core.cs_registers_i.mhpmcounter[index];
+  endfunction
+`endif
 simple_uart #(
     .ClockFrequency (ClockFrequency),
     .BaudRate       (BaudRate)
@@ -177,12 +191,38 @@ sram #(
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
     .MemInitFile (ManagementCoreScratchpadData)
-) managment_scratchpad_data (
+) management_scratchpad_data (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
     .tl_a_req_i (management_scratchpad_data_req),
     .tl_a_rsp_o (management_scratchpad_data_rsp)
+);
+
+
+// --- scratchpad vicuna0 ---
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile ()
+) vicuna0_scratchpad_instr (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4True),
+    .tl_a_req_i (vicuna0_scratchpad_instr_req),
+    .tl_a_rsp_o (vicuna0_scratchpad_instr_rsp)
+);
+
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile ()
+) vicuna0_scratchpad_data (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4False),
+    .tl_a_req_i (vicuna0_scratchpad_data_req),
+    .tl_a_rsp_o (vicuna0_scratchpad_data_rsp)
 );
 endmodule
