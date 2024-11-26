@@ -60,8 +60,7 @@ tlul_adapter_sram #(
     .intg_error_o       (),
     .rdata_i            (b_rdata),
     .rvalid_i           (b_rvalid),
-    .rerror_i           (2'b00),
-    .rmw_in_progress_o  ()
+    .rerror_i           (2'b00)
 );
 
 tlul_adapter_sram #(
@@ -88,11 +87,10 @@ tlul_adapter_sram #(
     .intg_error_o       (),
     .rdata_i            (a_rdata),
     .rvalid_i           (a_rvalid),
-    .rerror_i           (2'b00),
-    .rmw_in_progress_o  ()
+    .rerror_i           (2'b00)
 );
 
-prim_ram_2p #(
+prim_generic_ram_2p #(
     .Width        (32),
     .Depth        (Depth),
     .MemInitFile  (MemInitFile)
