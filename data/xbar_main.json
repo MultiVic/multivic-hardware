@@ -60,7 +60,7 @@
 
             "xbar": false,
             "addr_range": [{
-                "base_addr": "0x00800000",
+                "base_addr": "0x80001000",
                 "size_byte": "0x1000"
             }]
         },
