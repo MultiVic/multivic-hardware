@@ -160,4 +160,29 @@ simple_uart #(
     .tl_i(uart_req),
     .tl_o(uart_rsp)
 );
+
+// --- scratchpad management ---
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadInstr)
+) management_scratchpad_instr (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4True),
+    .tl_a_req_i (management_scratchpad_instr_req),
+    .tl_a_rsp_o (management_scratchpad_instr_rsp)
+);
+
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadData)
+) managment_scratchpad_data (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4False),
+    .tl_a_req_i (management_scratchpad_data_req),
+    .tl_a_rsp_o (management_scratchpad_data_rsp)
+);
 endmodule
