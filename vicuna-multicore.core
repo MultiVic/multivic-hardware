@@ -8,6 +8,7 @@ filesets:
       - "lowrisc:ip:xbar_main:0.1"
       - "fzi:ip:simple_uart"
       - "fzi:ip:sram:0.1"
+#      - "tuwien:vicuna:vproc"
     files:
       - "src/system.sv"
     file_type: "systemVerilogSource"
