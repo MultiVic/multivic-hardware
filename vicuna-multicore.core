@@ -76,6 +76,8 @@ targets:
           # 'features', meaning those errors need to be disabled
           - '-Wno-WIDTHTRUNC'
           - '-Wno-MULTIDRIVEN'
+          # some signal in ibex is unoptimizable
+          - '-Wno-UNOPTFLAT'
     parameters: 
       - PRIM_DEFAULT_IMPL=prim_pkg::ImplGeneric
     flags:
