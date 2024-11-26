@@ -12,6 +12,10 @@ filesets:
 
   verilator:
     depend:
+#      - "lowrisc:ibex:sim_shared"
+      - "lowrisc:dv_verilator:memutil_verilator"
+      - "lowrisc:dv_verilator:simutil_verilator"
+      - "lowrisc:dv_verilator:ibex_pcounts"
       - "lowrisc:dv_dpi_c:uartdpi:0.1"
       - "lowrisc:dv_dpi_sv:uartdpi:0.1"
     files:
@@ -30,6 +34,10 @@ parameters:
     datatype: "str"
     description: "the initial instruction memory for the scratchpad memory of the management core"
     paramtype: "vlogparam"
+  PRIM_DEFAULT_IMPL:
+    datatype: "str"
+    description: "Primitives implementation to use, e.g. prim_pkg::ImplGeneric."
+    paramtype: "vlogdefine"
 
 targets:
   default: &default
@@ -47,4 +55,18 @@ targets:
     tools:
       verilator:
         mode: "cc"
+        verilator_options:
+          - '-CFLAGS "-std=c++14 -Wall -DVM_TRACE_FMT_FST -DTOPLEVEL_NAME=top_verilator"'
+          - '-LDFLAGS "-pthread -lutil -lelf"'
+          - '-Wno-PINMISSING'
+          - '-Wno-WIDTHEXPAND'
+          - '-Wno-UNSIGNED'
+          - '-Wno-WIDTHTRUNC'
+          - '-Wno-MULTIDRIVEN'
+            # TODO: loo how to remove widthtrunc and multidriven
+    parameters: 
+      - PRIM_DEFAULT_IMPL=prim_pkg::ImplGeneric
+    flags:
+      use_bscane_tap: false
+
 
