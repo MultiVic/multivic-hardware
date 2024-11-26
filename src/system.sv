@@ -87,7 +87,7 @@ xbar_main #() u_xbar_main (
     .tl_management_scratchpad_instr_o(management_scratchpad_instr_req),
     .tl_management_scratchpad_instr_i(management_scratchpad_instr_rsp),
     .tl_management_scratchpad_data_o (management_scratchpad_data_req),
-    .tl_management_scratchpad_data_ii (management_scratchpad_data_rsp),
+    .tl_management_scratchpad_data_i (management_scratchpad_data_rsp),
 
     .tl_vicuna0_scratchpad_instr_o(vicuna0_scratchpad_instr_req),
     .tl_vicuna0_scratchpad_instr_i(vicuna0_scratchpad_instr_rsp),
@@ -247,4 +247,54 @@ sram #(
     .tl_b_rsp_o(vicuna0_core_data_rsp)
 );
 
+// --- vicuna1 core
+rv_core_vicuna #(
+    .RegFile(RegFileVicuna),
+    .MEM_W(32),
+    .VMEM_W(32),
+    .VREG_TYPE(VRegType),
+    .MUL_TYPE(MulType)
+) vicuna1_core (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    // Instruction memory interface
+    .corei_tl_h_o(vicuna1_core_instr_req),
+    .corei_tl_h_i(vicuna1_core_instr_rsp),
+
+    // Data memory interface
+    .cored_tl_h_o(vicuna1_core_data_req),
+    .cored_tl_h_i(vicuna1_core_data_rsp)
+);
+
+// --- scratchpad vicuna1 ---
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadInstr)
+) vicuna1_scratchpad_instr (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4True),
+
+    .tl_a_req_i(vicuna1_scratchpad_instr_req),
+    .tl_a_rsp_o(vicuna1_scratchpad_instr_rsp),
+    .tl_b_req_i(vicuna1_core_instr_req),
+    .tl_b_rsp_o(vicuna1_core_instr_rsp)
+);
+
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadData)
+) vicuna1_scratchpad_data (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4False),
+
+    .tl_a_req_i(vicuna1_scratchpad_data_req),
+    .tl_a_rsp_o(vicuna1_scratchpad_data_rsp),
+    .tl_b_req_i(vicuna1_core_data_req),
+    .tl_b_rsp_o(vicuna1_core_data_rsp)
+);
 endmodule
