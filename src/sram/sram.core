@@ -5,6 +5,7 @@ filesets:
   files_rtl:
     depend:
       - lowrisc:prim:all
+      - "lowrisc:prim_generic:ram_2p"
       - lowrisc:ip:tlul
     files:
       - rtl/sram.sv
