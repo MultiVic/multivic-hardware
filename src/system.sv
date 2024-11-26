@@ -3,6 +3,7 @@ module system_multicore #(
     parameter int unsigned ClockFrequency   = 125_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
+    parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
     parameter ManagementCoreScratchpadData  = "",
     parameter ManagementCoreScratchpadInstr = ""
 ) (
@@ -78,6 +79,7 @@ xbar_main #() u_xbar_main (
     .scanmode_i()
 );
 
+// --- management core ---
 rv_core_ibex #(
 //    .AlertAsyncOn(),
 //    .RndCnstLfsrSeed(),
@@ -157,6 +159,31 @@ rv_core_ibex #(
     .rst_otp_ni ('b1)
 );
 
+// --- scratchpad management ---
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadInstr)
+) management_scratchpad_instr (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4True),
+    .tl_a_req_i (management_scratchpad_instr_req),
+    .tl_a_rsp_o (management_scratchpad_instr_rsp)
+    );
+
+sram #(
+    .MemSize     (64 * 1024), // 64 KiB
+    .MemInitFile (ManagementCoreScratchpadData)
+) management_scratchpad_data (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .en_ifetch_i(prim_mubi_pkg::MuBi4False),
+    .tl_a_req_i (management_scratchpad_data_req),
+    .tl_a_rsp_o (management_scratchpad_data_rsp)
+);
+
 `ifdef VERILATOR
 
   export "DPI-C" function mhpmcounter_num;
@@ -186,30 +213,6 @@ simple_uart #(
     .tl_o(uart_rsp)
 );
 
-// --- scratchpad management ---
-sram #(
-    .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadInstr)
-) management_scratchpad_instr (
-    .clk_i (clk_sys_i),
-    .rst_ni(rst_sys_ni),
-
-    .en_ifetch_i(prim_mubi_pkg::MuBi4True),
-    .tl_a_req_i (management_scratchpad_instr_req),
-    .tl_a_rsp_o (management_scratchpad_instr_rsp)
-);
-
-sram #(
-    .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadData)
-) management_scratchpad_data (
-    .clk_i (clk_sys_i),
-    .rst_ni(rst_sys_ni),
-
-    .en_ifetch_i(prim_mubi_pkg::MuBi4False),
-    .tl_a_req_i (management_scratchpad_data_req),
-    .tl_a_rsp_o (management_scratchpad_data_rsp)
-);
 
 
 // --- scratchpad vicuna0 ---
@@ -242,7 +245,7 @@ sram #(
 );
 
 rv_core_vicuna #(
-    //.RegFile ( RegFile ),
+    .RegFile ( RegFileVicuna ),
     .MEM_W  (32),
     .VMEM_W (32)
 //    .VREG_TYPE    ( VRegType ),
