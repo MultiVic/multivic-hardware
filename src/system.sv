@@ -14,6 +14,31 @@ module system_multicore #(
     output logic uart_tx_o
 ); 
 
+// --- mhp performance counter for verilator ---
+`ifdef VERILATOR
+
+    export "DPI-C" function mhpmcounter_num;
+
+    function automatic int unsigned mhpmcounter_num();
+        return management_core_ibex.u_core.u_ibex_core.cs_registers_i.MHPMCounterNum;
+    endfunction
+
+    export "DPI-C" function mhpmcounter_get;
+
+    function automatic longint unsigned mhpmcounter_get(int index);
+        return management_core_ibex.u_core.u_ibex_core.cs_registers_i.mhpmcounter[index];
+    endfunction
+`endif
+
+// --- Vicuna Multype definition
+`ifdef VERILATOR
+    localparam vproc_pkg::mul_type MulType = vproc_pkg::MUL_GENERIC;
+    localparam vproc_pkg::vreg_type VRegType = vproc_pkg::VREG_GENERIC;
+`else
+    localparam vproc_pkg::mul_type MulType = vproc_pkg::MUL_XLNX_DSP48E1;
+    localparam vproc_pkg::vreg_type VRegType = vproc_pkg::VREG_XLNX_RAM32M;
+`endif
+
 // --- tlul declaration ---
 tlul_pkg::tl_h2d_t management_core_instr_req;
 tlul_pkg::tl_d2h_t management_core_instr_rsp;
@@ -49,6 +74,7 @@ tlul_pkg::tl_d2h_t vicuna1_core_data_rsp;
 tlul_pkg::tl_h2d_t uart_req;
 tlul_pkg::tl_d2h_t uart_rsp;
 
+// --- crossbar ---
 xbar_main #() u_xbar_main (
     .clk_main_i(clk_sys_i),
     .rst_main_ni(rst_sys_ni),
@@ -111,10 +137,6 @@ rv_core_ibex #(
 //    .DmExceptionAddr(),
 //    .PipeLine()
 ) management_core_ibex (
-    // [61]: fatal_sw_err
-    // [62]: recov_sw_err
-    // [63]: fatal_hw_err
-    // [64]: recov_hw_err
     .alert_tx_o  (),
     .alert_rx_i  (),
 
@@ -184,20 +206,7 @@ sram #(
     .tl_a_rsp_o (management_scratchpad_data_rsp)
 );
 
-`ifdef VERILATOR
-
-  export "DPI-C" function mhpmcounter_num;
-
-  function automatic int unsigned mhpmcounter_num();
-    return management_core_ibex.u_core.u_ibex_core.cs_registers_i.MHPMCounterNum;
-  endfunction
-
-  export "DPI-C" function mhpmcounter_get;
-
-  function automatic longint unsigned mhpmcounter_get(int index);
-    return management_core_ibex.u_core.u_ibex_core.cs_registers_i.mhpmcounter[index];
-  endfunction
-`endif
+// --- uart for management core ---
 simple_uart #(
     .ClockFrequency (ClockFrequency),
     .BaudRate       (BaudRate)
@@ -247,9 +256,9 @@ sram #(
 rv_core_vicuna #(
     .RegFile ( RegFileVicuna ),
     .MEM_W  (32),
-    .VMEM_W (32)
-//    .VREG_TYPE    ( VRegType ),
-//    .MUL_TYPE     ( MulType ),
+    .VMEM_W (32),
+    .VREG_TYPE    ( VRegType ),
+    .MUL_TYPE     ( MulType )
 //    .DbgTriggerEn    ( 1'b1             ),
 //    .DbgHwBreakNum   ( 2                ),
 //    .DmHaltAddr      ( DEBUG_START + dm::HaltAddress[31:0]     ),
