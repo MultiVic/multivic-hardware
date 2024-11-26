@@ -6,6 +6,7 @@ filesets:
     depend:
       - "lowrisc:ip:rv_core_ibex:0.1"
       - "lowrisc:ip:xbar_main:0.1"
+      - "fzi:ip:simple_uart"
     files:
       - "src/system.sv"
     file_type: "systemVerilogSource"

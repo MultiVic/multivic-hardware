@@ -9,8 +9,8 @@ module system_multicore #(
     input logic clk_sys_i,
     input logic rst_sys_ni,
 
-    input logic uart_rx_i,
-    input logic uart_tx_o
+    input  logic uart_rx_i,
+    output logic uart_tx_o
 ); 
 
 // --- tlul declaration ---
@@ -146,4 +146,18 @@ xbar_main #() u_xbar_main (
       .rst_otp_ni ('b0)
   );
 
+simple_uart #(
+    .ClockFrequency (ClockFrequency),
+    .BaudRate       (BaudRate)
+) u_simple_uart (
+    .clk_i (clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .uart_rx_i(uart_rx_i),
+    .uart_tx_o(uart_tx_o),
+    .uart_irq_o(), // TODO connect to vicuna interrupt inputs
+
+    .tl_i(uart_req),
+    .tl_o(uart_rsp)
+);
 endmodule
