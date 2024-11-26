@@ -37,7 +37,7 @@
             "xbar": false,
             "addr_range": [{
                 "base_addr": "0x00000000",
-                "size_byte": "0x10000" // 64 KiB
+                "size_byte": "0x10000"
             }]
         },
         {
@@ -49,7 +49,7 @@
             "xbar": false,
             "addr_range": [{
                 "base_addr": "0x00100000",
-                "size_byte": "0x10000" // 64 KiB
+                "size_byte": "0x10000"
             }]
         },
         {
@@ -61,7 +61,7 @@
             "xbar": false,
             "addr_range": [{
                 "base_addr": "0x00800000",
-                "size_byte": "0x1000" // 64 KiB
+                "size_byte": "0x1000"
             }]
         },
         {
