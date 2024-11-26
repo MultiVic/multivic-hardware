@@ -14,7 +14,7 @@ tl_device_t xbar_devices[$] = '{
         '{32'h00100000, 32'h0010ffff}
     }},
     '{"uart", '{
-        '{32'h00800000, 32'h00800fff}
+        '{32'h80001000, 32'h80001fff}
     }},
     '{"vicuna0_scratchpad_instr", '{
         '{32'h00200000, 32'h0020ffff}

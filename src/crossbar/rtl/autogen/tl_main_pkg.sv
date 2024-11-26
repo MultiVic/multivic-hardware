@@ -8,7 +8,7 @@ package tl_main_pkg;
 
   localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_INSTR = 32'h 00000000;
   localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA  = 32'h 00100000;
-  localparam logic [31:0] ADDR_SPACE_UART                        = 32'h 00800000;
+  localparam logic [31:0] ADDR_SPACE_UART                        = 32'h 80001000;
   localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_INSTR    = 32'h 00200000;
   localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_DATA     = 32'h 00300000;
   localparam logic [31:0] ADDR_SPACE_VICUNA1_SCRATCHPAD_INSTR    = 32'h 00400000;
