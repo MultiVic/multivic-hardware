@@ -6,9 +6,10 @@
 #include <fstream>
 #include <iostream>
 
-#include "Vtop_verilator_vicuna__Syms.h"
+// TODO: check import names and function names
+#include "Vtop_verilator__Syms.h"
 #include "ibex_pcounts.h"
-#include "vicuna_demo_system.h"
+#include "verilator.h"
 #include "verilated_toplevel.h"
 #include "verilator_memutil.h"
 #include "verilator_sim_ctrl.h"
@@ -17,11 +18,11 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-#include "vicuna_demo_system.h"
 
 int main(int argc, char **argv) {
+    // TODO: find proper argument
   VicunaMulticore demo_system(
-      "TOP.top_verilator.u_vicuna_demo_system.u_sram.u_ram_1p.gen_generic.u_impl_generic",
+      "TOP.top_verilator.system.u_sram.u_ram_1p.gen_generic.u_impl_generic",
       64 * 1024);
 
   return demo_system.Main(argc, argv);
@@ -80,13 +81,13 @@ bool VicunaMulticore::Finish() {
   // Set the scope to the root scope, the ibex_pcount_string function otherwise
   // doesn't know the scope itself. Could be moved to ibex_pcount_string, but
   // would require a way to set the scope name from here, similar to MemUtil.
-  svSetScope(svGetScopeFromName("TOP.top_verilator.u_vicuna_demo_system"));
+  svSetScope(svGetScopeFromName("TOP.top_verilator.system_multicore"));
 
   std::cout << "\nPerformance Counters" << std::endl
             << "====================" << std::endl;
   std::cout << ibex_pcount_string(false);
 
-  std::ofstream pcount_csv("vicuna_demo_system_pcount.csv");
+  std::ofstream pcount_csv("system_multicore_pcount.csv");
   pcount_csv << ibex_pcount_string(true);
 
   return true;
