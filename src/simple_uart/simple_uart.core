@@ -1,0 +1,18 @@
+CAPI=2:
+name: "fzi:ip:simple_uart:0.1"
+description: "Simple UART from Ibex Demo System with TL-UL interface attached"
+filesets:
+  files_rtl:
+    depend:
+      - lowrisc:prim:all
+      - lowrisc:ip:tlul
+    files:
+      - rtl/simple_uart_core.sv
+      - rtl/simple_uart.sv
+    file_type: systemVerilogSource
+
+targets:
+  default: &default_target
+    filesets:
+      - files_rtl
+    toplevel: simple_uart
