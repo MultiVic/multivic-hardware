@@ -4,7 +4,6 @@
 ```
 
 # Simulation - verilator
-(currently not working)
 ```bash
 fusesoc --cores-root=. run --target=sim --tool=verilator --setup --build ess-fzi:vicuna:multicore
 ```
