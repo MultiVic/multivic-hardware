@@ -40,8 +40,6 @@ module system_multicore #(
 `endif
 
 // --- tlul declaration ---
-tlul_pkg::tl_h2d_t management_core_instr_req;
-tlul_pkg::tl_d2h_t management_core_instr_rsp;
 tlul_pkg::tl_h2d_t management_core_data_req;
 tlul_pkg::tl_d2h_t management_core_data_rsp;
 
@@ -79,13 +77,9 @@ xbar_main #() u_xbar_main (
     .clk_main_i(clk_sys_i),
     .rst_main_ni(rst_sys_ni),
 
-    .tl_management_core_instr_i(management_core_instr_req),
-    .tl_management_core_instr_o(management_core_instr_rsp),
     .tl_management_core_data_i (management_core_data_req),
     .tl_management_core_data_o (management_core_data_rsp),
 
-    .tl_management_scratchpad_instr_o(management_scratchpad_instr_req),
-    .tl_management_scratchpad_instr_i(management_scratchpad_instr_rsp),
     .tl_management_scratchpad_data_o (management_scratchpad_data_req),
     .tl_management_scratchpad_data_i (management_scratchpad_data_rsp),
 
@@ -137,8 +131,8 @@ rv_core_ibex #(
     .icache_otp_key_o(),
     .icache_otp_key_i(),
     .fpga_info_i(),
-    .corei_tl_h_o(management_core_instr_req),
-    .corei_tl_h_i(management_core_instr_rsp),
+    .corei_tl_h_o(management_scratchpad_data_req),
+    .corei_tl_h_i(management_scratchpad_data_rsp),
     .cored_tl_h_o(management_core_data_req),
     .cored_tl_h_i(management_core_data_rsp),
     .cfg_tl_d_i(),
