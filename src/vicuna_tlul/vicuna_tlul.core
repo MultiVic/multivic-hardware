@@ -1,0 +1,16 @@
+CAPI=2:
+name: "fzi:ip:vicuna_tlul:0.1"
+description: "Tlul adapter for vicuna"
+filesets:
+  rtl:
+    depend:
+      - "tuwien:vicuna:vproc"
+    files:
+      - "rtl/vicuna_tlul.sv"
+    file_type: "systemVerilogSource"
+
+targets:
+  default: &default_target
+    filesets:
+      - "rtl"
+    toplevel: "vicuna_tlul"

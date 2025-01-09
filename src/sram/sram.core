@@ -1,0 +1,18 @@
+CAPI=2:
+name: "fzi:ip:sram:0.1"
+description: "Simple SRAM with TL-UL interface"
+filesets:
+  files_rtl:
+    depend:
+      - lowrisc:prim:all
+      - "lowrisc:prim_generic:ram_2p"
+      - lowrisc:ip:tlul
+    files:
+      - rtl/sram.sv
+    file_type: systemVerilogSource
+
+targets:
+  default: &default_target
+    filesets:
+      - files_rtl
+    toplevel: sram

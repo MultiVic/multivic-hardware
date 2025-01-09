@@ -1,0 +1,9 @@
+[submodule "submodules/vicuna"]
+	path = submodules/vicuna
+	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/vicuna.git
+[submodule "submodules/opentitan"]
+	path = submodules/opentitan
+	url = https://github.com/lowRISC/opentitan.git
+[submodule "submodules/ibex-xif"]
+	path = submodules/ibex-xif
+	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/ibex-xif.git

@@ -1,0 +1,87 @@
+CAPI=2:
+name: "ess-fzi:vicuna:multicore:0.0.1"
+description: "a multicore system with one management core and multiple ai accellerator cores"
+filesets:
+  rtl:
+    depend:
+      - "lowrisc:ip:rv_core_ibex:0.1"
+      - "lowrisc:ip:xbar_main:0.1"
+      - "fzi:ip:simple_uart"
+      - "fzi:ip:sram:0.1"
+      - "fzi:ip:vicuna_tlul:0.1"
+    files:
+      - "src/system.sv"
+    file_type: "systemVerilogSource"
+
+  verilator:
+    depend:
+#      - "lowrisc:ibex:sim_shared"
+      - "lowrisc:dv_verilator:memutil_verilator"
+      - "lowrisc:dv_verilator:simutil_verilator"
+      - "lowrisc:dv_verilator:ibex_pcounts"
+      - "lowrisc:dv_dpi_c:uartdpi:0.1"
+      - "lowrisc:dv_dpi_sv:uartdpi:0.1"
+    files:
+      - "simulation/top_verilator.sv": { file_type: systemVerilogSource }
+      - "simulation/verilator.cc" : { file_type: cppSource }
+      - "simulation/verilator.h":  { file_type: cppSource, is_include_file: true}
+    #  - "dv/verilator/vicuna_demo_system_main.cc" : { file_type: cppSource }
+    #  - dv/verilator/demo_system_verilator_lint.vlt:  { file_type: vlt }
+
+parameters:
+  ScratchpadDataInitFile:
+    datatype: "str"
+    description: "the initial data memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+  ScratchpadInstrInitFile:
+    datatype: "str"
+    description: "the initial instruction memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+  PRIM_DEFAULT_IMPL:
+    datatype: "str"
+    description: "Primitives implementation to use, e.g. prim_pkg::ImplGeneric."
+    paramtype: "vlogdefine"
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    parameters:
+
+  sim:
+    <<: *default
+    description: "Run the device in a simulation"
+    filesets_append:
+    - verilator
+    default_tool: "verilator"
+    toplevel: "top_verilator"
+    tools:
+      verilator:
+        mode: "cc"
+        verilator_options:
+          # --- tracing ---
+          - '--trace'
+          - '--trace-fst' # requires -DVM_TRACE_FMT_FST in CFLAGS
+          - '--trace-structs'
+          - '--trace-params'
+          - '--trace-max-array 1024'
+
+          - '-CFLAGS "-std=c++14 -Wall -DVM_TRACE_FMT_FST -DTOPLEVEL_NAME=top_verilator"'
+          - '-LDFLAGS "-pthread -lutil -lelf"'
+          - '-Wno-PINMISSING'
+          - '-Wno-WIDTHEXPAND'
+          - '-Wno-UNSIGNED'
+          # aperrantly, the vicuna-demo-system works with a different version of
+          # verilog, as this one does not allow Width truncation and multidriven
+          # signals by default. However, the opentitan code makes use of these
+          # 'features', meaning those errors need to be disabled
+          - '-Wno-WIDTHTRUNC'
+          - '-Wno-MULTIDRIVEN'
+          # some signal in ibex is unoptimizable
+          - '-Wno-UNOPTFLAT'
+    parameters: 
+      - PRIM_DEFAULT_IMPL=prim_pkg::ImplGeneric
+    flags:
+      use_bscane_tap: false
+
+
