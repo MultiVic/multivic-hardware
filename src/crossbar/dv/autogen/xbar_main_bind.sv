@@ -14,6 +14,12 @@ module xbar_main_bind;
   );
 
   // Device interfaces
+  bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_management_scratchpad_instr (
+    .clk_i  (clk_main_i),
+    .rst_ni (rst_main_ni),
+    .h2d    (tl_management_scratchpad_instr_o),
+    .d2h    (tl_management_scratchpad_instr_i)
+  );
   bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_management_scratchpad_data (
     .clk_i  (clk_main_i),
     .rst_ni (rst_main_ni),
