@@ -1,5 +1,5 @@
 import re
-core_count = 2
+from Variables import core_count
 
 def _replaceName(core_id,content):
     return re.sub(f"CORE_NAME",f"vicuna{core_id}",content);

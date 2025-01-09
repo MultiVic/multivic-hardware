@@ -1,11 +1,11 @@
 import json
+from Variables import core_count
 
 # default options
 base_addrs = 0x00200000
 step = 0x00100000
 memory_size_data = 0x10000
 memory_size_instr = 0x10000
-core_count = 2
 
 def generate_device_entry(name, base_addr_hart, memory_size):
     return {
