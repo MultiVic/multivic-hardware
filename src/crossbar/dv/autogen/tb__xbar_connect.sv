@@ -14,11 +14,9 @@ initial force dut.clk_main_i = clk_main_i;
 initial force dut.rst_main_ni = rst_n;
 
 // Host TileLink interface connections
-`CONNECT_TL_HOST_IF(management_core_instr, dut, clk_main_i, rst_n)
 `CONNECT_TL_HOST_IF(management_core_data, dut, clk_main_i, rst_n)
 
 // Device TileLink interface connections
-`CONNECT_TL_DEVICE_IF(management_scratchpad_instr, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(management_scratchpad_data, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(uart, dut, clk_main_i, rst_n)
 `CONNECT_TL_DEVICE_IF(vicuna0_scratchpad_instr, dut, clk_main_i, rst_n)

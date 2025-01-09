@@ -6,38 +6,34 @@
 
 package tl_main_pkg;
 
-  localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_INSTR = 32'h 00000000;
-  localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA  = 32'h 00100000;
-  localparam logic [31:0] ADDR_SPACE_UART                        = 32'h 80001000;
-  localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_INSTR    = 32'h 00200000;
-  localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_DATA     = 32'h 00300000;
-  localparam logic [31:0] ADDR_SPACE_VICUNA1_SCRATCHPAD_INSTR    = 32'h 00400000;
-  localparam logic [31:0] ADDR_SPACE_VICUNA1_SCRATCHPAD_DATA     = 32'h 00500000;
+  localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA = 32'h 00100000;
+  localparam logic [31:0] ADDR_SPACE_UART                       = 32'h 80001000;
+  localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_INSTR   = 32'h 00200000;
+  localparam logic [31:0] ADDR_SPACE_VICUNA0_SCRATCHPAD_DATA    = 32'h 00300000;
+  localparam logic [31:0] ADDR_SPACE_VICUNA1_SCRATCHPAD_INSTR   = 32'h 00400000;
+  localparam logic [31:0] ADDR_SPACE_VICUNA1_SCRATCHPAD_DATA    = 32'h 00500000;
 
-  localparam logic [31:0] ADDR_MASK_MANAGEMENT_SCRATCHPAD_INSTR = 32'h 0000ffff;
-  localparam logic [31:0] ADDR_MASK_MANAGEMENT_SCRATCHPAD_DATA  = 32'h 0000ffff;
-  localparam logic [31:0] ADDR_MASK_UART                        = 32'h 00000fff;
-  localparam logic [31:0] ADDR_MASK_VICUNA0_SCRATCHPAD_INSTR    = 32'h 0000ffff;
-  localparam logic [31:0] ADDR_MASK_VICUNA0_SCRATCHPAD_DATA     = 32'h 0000ffff;
-  localparam logic [31:0] ADDR_MASK_VICUNA1_SCRATCHPAD_INSTR    = 32'h 0000ffff;
-  localparam logic [31:0] ADDR_MASK_VICUNA1_SCRATCHPAD_DATA     = 32'h 0000ffff;
+  localparam logic [31:0] ADDR_MASK_MANAGEMENT_SCRATCHPAD_DATA = 32'h 0000ffff;
+  localparam logic [31:0] ADDR_MASK_UART                       = 32'h 00000fff;
+  localparam logic [31:0] ADDR_MASK_VICUNA0_SCRATCHPAD_INSTR   = 32'h 0000ffff;
+  localparam logic [31:0] ADDR_MASK_VICUNA0_SCRATCHPAD_DATA    = 32'h 0000ffff;
+  localparam logic [31:0] ADDR_MASK_VICUNA1_SCRATCHPAD_INSTR   = 32'h 0000ffff;
+  localparam logic [31:0] ADDR_MASK_VICUNA1_SCRATCHPAD_DATA    = 32'h 0000ffff;
 
-  localparam int N_HOST   = 2;
-  localparam int N_DEVICE = 7;
+  localparam int N_HOST   = 1;
+  localparam int N_DEVICE = 6;
 
   typedef enum int {
-    TlManagementScratchpadInstr = 0,
-    TlManagementScratchpadData = 1,
-    TlUart = 2,
-    TlVicuna0ScratchpadInstr = 3,
-    TlVicuna0ScratchpadData = 4,
-    TlVicuna1ScratchpadInstr = 5,
-    TlVicuna1ScratchpadData = 6
+    TlManagementScratchpadData = 0,
+    TlUart = 1,
+    TlVicuna0ScratchpadInstr = 2,
+    TlVicuna0ScratchpadData = 3,
+    TlVicuna1ScratchpadInstr = 4,
+    TlVicuna1ScratchpadData = 5
   } tl_device_e;
 
   typedef enum int {
-    TlManagementCoreInstr = 0,
-    TlManagementCoreData = 1
+    TlManagementCoreData = 0
   } tl_host_e;
 
 endpackage

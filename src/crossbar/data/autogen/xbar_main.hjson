@@ -14,23 +14,11 @@
     // host
     { struct: "tl"
       type:   "req_rsp"
-      name:   "tl_management_core_instr"
-      act:    "rsp"
-      package: "tlul_pkg"
-    }
-    { struct: "tl"
-      type:   "req_rsp"
       name:   "tl_management_core_data"
       act:    "rsp"
       package: "tlul_pkg"
     }
     // device
-    { struct: "tl"
-      type:   "req_rsp"
-      name:   "tl_management_scratchpad_instr"
-      act:    "req"
-      package: "tlul_pkg"
-    }
     { struct: "tl"
       type:   "req_rsp"
       name:   "tl_management_scratchpad_data"

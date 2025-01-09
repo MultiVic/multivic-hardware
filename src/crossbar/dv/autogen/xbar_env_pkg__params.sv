@@ -7,9 +7,6 @@
 
 // List of Xbar device memory map
 tl_device_t xbar_devices[$] = '{
-    '{"management_scratchpad_instr", '{
-        '{32'h00000000, 32'h0000ffff}
-    }},
     '{"management_scratchpad_data", '{
         '{32'h00100000, 32'h0010ffff}
     }},
@@ -31,9 +28,7 @@ tl_device_t xbar_devices[$] = '{
 
   // List of Xbar hosts
 tl_host_t xbar_hosts[$] = '{
-    '{"management_core_instr", 0, '{
-    ,
-    '{"management_core_data", 1, '{
+    '{"management_core_data", 0, '{
         "management_scratchpad_data",
         "vicuna0_scratchpad_data",
         "vicuna0_scratchpad_instr",
