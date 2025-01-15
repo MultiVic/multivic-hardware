@@ -45,10 +45,19 @@ tlul_pkg::tl_d2h_t management_core_instr_rsp;
 tlul_pkg::tl_h2d_t management_core_data_req;
 tlul_pkg::tl_d2h_t management_core_data_rsp;
 
+tlul_pkg::tl_h2d_t dma_host_port_req;
+tlul_pkg::tl_d2h_t dma_host_port_rsp;
+tlul_pkg::tl_h2d_t dma_register_port_req;
+tlul_pkg::tl_d2h_t dma_register_port_rsp;
+
 tlul_pkg::tl_h2d_t management_scratchpad_instr_req;
 tlul_pkg::tl_d2h_t management_scratchpad_instr_rsp;
+// Ports of the management data scratchpad connected to main crossbar
 tlul_pkg::tl_h2d_t management_scratchpad_data_req;
 tlul_pkg::tl_d2h_t management_scratchpad_data_rsp;
+// Ports of the management data scratchpad connected to the management peripherals crossbar
+tlul_pkg::tl_h2d_t management_scratchpad_data_req_b;
+tlul_pkg::tl_d2h_t management_scratchpad_data_rsp_b;
 
 tlul_pkg::tl_h2d_t vicuna0_scratchpad_instr_req;
 tlul_pkg::tl_d2h_t vicuna0_scratchpad_instr_rsp;
@@ -79,8 +88,8 @@ xbar_main #() u_xbar_main (
     .clk_main_i(clk_sys_i),
     .rst_main_ni(rst_sys_ni),
 
-    .tl_management_core_data_i (management_core_data_req),
-    .tl_management_core_data_o (management_core_data_rsp),
+    .tl_dma_i(dma_host_port_req),
+    .tl_dma_o(dma_host_port_rsp),
 
     .tl_management_scratchpad_instr_o (management_scratchpad_data_req),
     .tl_management_scratchpad_instr_i (management_scratchpad_data_rsp),
@@ -97,8 +106,24 @@ xbar_main #() u_xbar_main (
     .tl_vicuna1_scratchpad_data_o (vicuna1_scratchpad_data_req),
     .tl_vicuna1_scratchpad_data_i (vicuna1_scratchpad_data_rsp),
 
+    .scanmode_i()
+);
+
+xbar_management_peripherals #() u_xbar_management_peripherals(
+    .clk_main_i(clk_sys_i),
+    .rst_main_ni(rst_sys_ni),
+
+    .tl_management_core_data_i(management_core_data_req),
+    .tl_management_core_data_o(management_core_data_rsp),
+
+    .tl_management_scratchpad_data_o(management_scratchpad_data_req_b),
+    .tl_management_scratchpad_data_i(management_scratchpad_data_rsp_b),
+
     .tl_uart_o(uart_req),
     .tl_uart_i(uart_rsp),
+
+    .tl_dma_register_port_o(dma_register_port_req),
+    .tl_dma_register_port_i(dma_register_port_rsp),
 
     .scanmode_i()
 );
@@ -152,6 +177,38 @@ rv_core_ibex #(
     .rst_otp_ni('b1)
 );
 
+dma #()(
+    .clk_i(clk_sys_i),
+    .rst_ni(rst_sys_ni),
+    .scanmode_i(),
+
+    // TODO connect dma interrupts in a meaningful way
+    .intr_dma_done_o(),
+    .intr_dma_chunk_done_o(),
+    .intr_dma_error_o(),
+    .lsio_trigger_i(1'b0),
+
+    // TODO Remove alerts?
+    .alert_rx_i(),
+    .alert_tx_o(),
+
+    // Device Port (Register Interface)
+    .tl_d_i(dma_register_port_req),
+    .tl_d_o(dma_register_port_rsp),
+
+    // Host Port (Memory Interface, towards the crossbar)
+    .host_tl_h_i(dma_host_port_rsp),
+    .host_tl_h_o(dma_host_port_req),
+
+    // CTN Port (Memory Interface, towards the Main Memory)
+    .ctn_tl_d2h_i(),
+    .ctn_tl_h2d_o(),
+
+    // System Port, unused
+    .sys_i(),
+    .sys_o()
+);
+
 // --- scratchpad management ---
 sram #(
     .MemSize    (64 * 1024), // 64 KiB
@@ -166,7 +223,7 @@ sram #(
     .tl_a_rsp_o(management_scratchpad_instr_rsp),
     .tl_b_req_i(management_core_instr_req),
     .tl_b_rsp_o(management_core_instr_rsp)
-    );
+);
 
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
