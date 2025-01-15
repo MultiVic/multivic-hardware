@@ -177,7 +177,7 @@ rv_core_ibex #(
     .rst_otp_ni('b1)
 );
 
-dma #()(
+dma #() u_dma(
     .clk_i(clk_sys_i),
     .rst_ni(rst_sys_ni),
     .scanmode_i(),
