@@ -13,7 +13,7 @@ tl_device_t xbar_devices[$] = '{
     '{"uart", '{
         '{32'h80001000, 32'h80001fff}
     }},
-    '{"dma_register_interface", '{
+    '{"dma_register_port", '{
         '{32'h90001000, 32'h90001fff}
 }}};
 
@@ -22,5 +22,5 @@ tl_host_t xbar_hosts[$] = '{
     '{"management_core_data", 0, '{
         "management_scratchpad_data",
         "uart",
-        "dma_register_interface"}}
+        "dma_register_port"}}
 };

@@ -26,11 +26,11 @@ module xbar_management_peripherals_bind;
     .h2d    (tl_uart_o),
     .d2h    (tl_uart_i)
   );
-  bind xbar_management_peripherals tlul_assert #(.EndpointType("Host")) tlul_assert_device_dma_register_interface (
+  bind xbar_management_peripherals tlul_assert #(.EndpointType("Host")) tlul_assert_device_dma_register_port (
     .clk_i  (clk_main_i),
     .rst_ni (rst_main_ni),
-    .h2d    (tl_dma_register_interface_o),
-    .d2h    (tl_dma_register_interface_i)
+    .h2d    (tl_dma_register_port_o),
+    .d2h    (tl_dma_register_port_i)
   );
 `endif
 endmodule

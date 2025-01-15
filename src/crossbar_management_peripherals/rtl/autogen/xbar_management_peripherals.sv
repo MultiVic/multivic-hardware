@@ -10,7 +10,7 @@
 //   -> s1n_4
 //     -> management_scratchpad_data
 //     -> uart
-//     -> dma_register_interface
+//     -> dma_register_port
 
 module xbar_management_peripherals (
   input clk_main_i,
@@ -25,8 +25,8 @@ module xbar_management_peripherals (
   input  tlul_pkg::tl_d2h_t tl_management_scratchpad_data_i,
   output tlul_pkg::tl_h2d_t tl_uart_o,
   input  tlul_pkg::tl_d2h_t tl_uart_i,
-  output tlul_pkg::tl_h2d_t tl_dma_register_interface_o,
-  input  tlul_pkg::tl_d2h_t tl_dma_register_interface_i,
+  output tlul_pkg::tl_h2d_t tl_dma_register_port_o,
+  input  tlul_pkg::tl_d2h_t tl_dma_register_port_i,
 
   input prim_mubi_pkg::mubi4_t scanmode_i
 );
@@ -57,8 +57,8 @@ module xbar_management_peripherals (
   assign tl_uart_o = tl_s1n_4_ds_h2d[1];
   assign tl_s1n_4_ds_d2h[1] = tl_uart_i;
 
-  assign tl_dma_register_interface_o = tl_s1n_4_ds_h2d[2];
-  assign tl_s1n_4_ds_d2h[2] = tl_dma_register_interface_i;
+  assign tl_dma_register_port_o = tl_s1n_4_ds_h2d[2];
+  assign tl_s1n_4_ds_d2h[2] = tl_dma_register_port_i;
 
   assign tl_s1n_4_us_h2d = tl_management_core_data_i;
   assign tl_management_core_data_o = tl_s1n_4_us_d2h;
@@ -75,7 +75,7 @@ module xbar_management_peripherals (
       dev_sel_s1n_4 = 2'd1;
 
     end else if ((tl_s1n_4_us_h2d.a_address &
-                  ~(ADDR_MASK_DMA_REGISTER_INTERFACE)) == ADDR_SPACE_DMA_REGISTER_INTERFACE) begin
+                  ~(ADDR_MASK_DMA_REGISTER_PORT)) == ADDR_SPACE_DMA_REGISTER_PORT) begin
       dev_sel_s1n_4 = 2'd2;
 end
   end

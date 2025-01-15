@@ -45,7 +45,7 @@
             }]
         },
         {
-            "name": "dma_register_interface",
+            "name": "dma_register_port",
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
@@ -61,7 +61,7 @@
         "management_core_data": [
             "management_scratchpad_data",
             "uart",
-            "dma_register_interface"
+            "dma_register_port"
         ]
     }
     

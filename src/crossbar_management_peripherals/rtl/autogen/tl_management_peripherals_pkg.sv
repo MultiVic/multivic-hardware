@@ -8,11 +8,11 @@ package tl_management_peripherals_pkg;
 
   localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA = 32'h 00000000;
   localparam logic [31:0] ADDR_SPACE_UART                       = 32'h 80001000;
-  localparam logic [31:0] ADDR_SPACE_DMA_REGISTER_INTERFACE     = 32'h 90001000;
+  localparam logic [31:0] ADDR_SPACE_DMA_REGISTER_PORT          = 32'h 90001000;
 
   localparam logic [31:0] ADDR_MASK_MANAGEMENT_SCRATCHPAD_DATA = 32'h 0000ffff;
   localparam logic [31:0] ADDR_MASK_UART                       = 32'h 00000fff;
-  localparam logic [31:0] ADDR_MASK_DMA_REGISTER_INTERFACE     = 32'h 00000fff;
+  localparam logic [31:0] ADDR_MASK_DMA_REGISTER_PORT          = 32'h 00000fff;
 
   localparam int N_HOST   = 1;
   localparam int N_DEVICE = 3;
@@ -20,7 +20,7 @@ package tl_management_peripherals_pkg;
   typedef enum int {
     TlManagementScratchpadData = 0,
     TlUart = 1,
-    TlDmaRegisterInterface = 2
+    TlDmaRegisterPort = 2
   } tl_device_e;
 
   typedef enum int {

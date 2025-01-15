@@ -33,7 +33,7 @@
     }
     { struct: "tl"
       type:   "req_rsp"
-      name:   "tl_dma_register_interface"
+      name:   "tl_dma_register_port"
       act:    "req"
       package: "tlul_pkg"
     }
