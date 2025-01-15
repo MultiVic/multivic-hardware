@@ -28,7 +28,7 @@
 
             "xbar": false,
             "addr_range": [{
-                "base_addrs": {"management_peripherals":"0x00000000"},
+                "base_addrs": {"management_peripherals":"0x00100000"},
                 "size_byte": "0x10000"
             }]
         },

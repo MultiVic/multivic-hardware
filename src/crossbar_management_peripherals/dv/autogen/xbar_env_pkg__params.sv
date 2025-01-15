@@ -8,7 +8,7 @@
 // List of Xbar device memory map
 tl_device_t xbar_devices[$] = '{
     '{"management_scratchpad_data", '{
-        '{32'h00000000, 32'h0000ffff}
+        '{32'h00100000, 32'h0010ffff}
     }},
     '{"uart", '{
         '{32'h80001000, 32'h80001fff}

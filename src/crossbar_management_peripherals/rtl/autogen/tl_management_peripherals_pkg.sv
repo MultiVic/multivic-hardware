@@ -6,7 +6,7 @@
 
 package tl_management_peripherals_pkg;
 
-  localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA = 32'h 00000000;
+  localparam logic [31:0] ADDR_SPACE_MANAGEMENT_SCRATCHPAD_DATA = 32'h 00100000;
   localparam logic [31:0] ADDR_SPACE_UART                       = 32'h 80001000;
   localparam logic [31:0] ADDR_SPACE_DMA_REGISTER_PORT          = 32'h 90001000;
 

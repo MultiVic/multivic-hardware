@@ -235,7 +235,9 @@ sram #(
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
 
     .tl_a_req_i(management_scratchpad_data_req),
-    .tl_a_rsp_o(management_scratchpad_data_rsp)
+    .tl_a_rsp_o(management_scratchpad_data_rsp),
+    .tl_b_req_i(management_scratchpad_data_req_b),
+    .tl_b_rsp_o(management_scratchpad_data_rsp_b)
 );
 
 // --- uart interface for management core ---
