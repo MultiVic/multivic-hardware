@@ -7,11 +7,11 @@
     },
     "reset": "rst_main_ni",
     "reset_connections": {
-        rst_main_ni:   "sys"
+        "rst_main_ni":   "sys"
     },
     "nodes": [
         {
-            "name": "management_core_data",
+            "name": "dma",
             "type": "host",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
@@ -42,18 +42,6 @@
             "addr_range": [{
                 "base_addrs": {"hart":"0x00100000"},
                 "size_byte": "0x10000"
-            }]
-        },
-        {
-            "name": "uart",
-            "type": "device",
-            "clock": "clk_main_i",
-            "reset": "rst_main_ni",
-
-            "xbar": false,
-            "addr_range": [{
-                "base_addrs": {"hart":"0x80001000"},
-                "size_byte": "0x1000"
             }]
         },
         {
@@ -106,14 +94,13 @@
         }
     ],
     "connections": {
-        "management_core_data": [
+        "dma": [
             "management_scratchpad_data",
             "management_scratchpad_instr",
             "vicuna0_scratchpad_data",
             "vicuna0_scratchpad_instr",
             "vicuna1_scratchpad_data",
-            "vicuna1_scratchpad_instr",
-            "uart"
+            "vicuna1_scratchpad_instr"
         ]
     }
 }
