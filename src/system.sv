@@ -91,10 +91,10 @@ xbar_main #() u_xbar_main (
     .tl_dma_i(dma_host_port_req),
     .tl_dma_o(dma_host_port_rsp),
 
-    .tl_management_scratchpad_instr_o (management_scratchpad_data_req),
-    .tl_management_scratchpad_instr_i (management_scratchpad_data_rsp),
-    .tl_management_scratchpad_data_o (management_scratchpad_instr_req),
-    .tl_management_scratchpad_data_i (management_scratchpad_instr_rsp),
+    .tl_management_scratchpad_instr_o (management_scratchpad_instr_req),
+    .tl_management_scratchpad_instr_i (management_scratchpad_instr_rsp),
+    .tl_management_scratchpad_data_o (management_scratchpad_data_req),
+    .tl_management_scratchpad_data_i (management_scratchpad_data_rsp),
 
     .tl_vicuna0_scratchpad_instr_o(vicuna0_scratchpad_instr_req),
     .tl_vicuna0_scratchpad_instr_i(vicuna0_scratchpad_instr_rsp),
