@@ -1,3 +1,8 @@
 /build
+__pycache__
 /sim.fst
 /uart0.log
+/data/xbar_main.json
+/src/crossbar_main/*
+/src/crossbar_management_peripherals/*
+/src/system.sv
