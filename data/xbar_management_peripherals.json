@@ -1,0 +1,68 @@
+{
+    "name": "management_peripherals",
+    "type": "xbar",
+    "clock": "clk_main_i",
+    "clock_connections": {
+        "clk_main_i":   "main"
+    },
+    "reset": "rst_main_ni",
+    "reset_connections": {
+        "rst_main_ni":   "sys"
+    },
+    "nodes": [
+        {
+            "name": "management_core_data",
+            "type": "host",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+            "addr_space": "management_peripherals",
+
+            "xbar": false,
+            "pipeline": false
+        },
+        {
+            "name": "management_scratchpad_data",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addrs": {"management_peripherals":"0x00100000"},
+                "size_byte": "0x10000"
+            }]
+        },
+        {
+            "name": "uart",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addrs": {"management_peripherals":"0x80001000"},
+                "size_byte": "0x1000"
+            }]
+        },
+        {
+            "name": "dma_register_port",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addrs": {"management_peripherals":"0x90001000"},
+                "size_byte": "0x1000"
+            }]
+        }
+    ],
+    "connections": {
+        "management_core_data": [
+            "management_scratchpad_data",
+            "uart",
+            "dma_register_port"
+        ]
+    }
+    
+}

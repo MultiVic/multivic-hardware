@@ -14,7 +14,7 @@
     // host
     { struct: "tl"
       type:   "req_rsp"
-      name:   "tl_management_core_data"
+      name:   "tl_dma"
       act:    "rsp"
       package: "tlul_pkg"
     }
@@ -28,12 +28,6 @@
     { struct: "tl"
       type:   "req_rsp"
       name:   "tl_management_scratchpad_data"
-      act:    "req"
-      package: "tlul_pkg"
-    }
-    { struct: "tl"
-      type:   "req_rsp"
-      name:   "tl_uart"
       act:    "req"
       package: "tlul_pkg"
     }

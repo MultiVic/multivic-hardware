@@ -6,11 +6,11 @@
 module xbar_main_bind;
 `ifndef GATE_LEVEL
   // Host interfaces
-  bind xbar_main tlul_assert #(.EndpointType("Device")) tlul_assert_host_management_core_data (
+  bind xbar_main tlul_assert #(.EndpointType("Device")) tlul_assert_host_dma (
     .clk_i  (clk_main_i),
     .rst_ni (rst_main_ni),
-    .h2d    (tl_management_core_data_i),
-    .d2h    (tl_management_core_data_o)
+    .h2d    (tl_dma_i),
+    .d2h    (tl_dma_o)
   );
 
   // Device interfaces
@@ -25,12 +25,6 @@ module xbar_main_bind;
     .rst_ni (rst_main_ni),
     .h2d    (tl_management_scratchpad_data_o),
     .d2h    (tl_management_scratchpad_data_i)
-  );
-  bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_uart (
-    .clk_i  (clk_main_i),
-    .rst_ni (rst_main_ni),
-    .h2d    (tl_uart_o),
-    .d2h    (tl_uart_i)
   );
   bind xbar_main tlul_assert #(.EndpointType("Host")) tlul_assert_device_vicuna0_scratchpad_instr (
     .clk_i  (clk_main_i),
