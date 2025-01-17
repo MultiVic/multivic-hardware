@@ -16,8 +16,8 @@ setup:
     @just generate_xbar
 
 # Run the project using verilator
-run: 
-    ./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator
+run *OPTIONS: 
+    ./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator {{OPTIONS}}
 
 # Clean the build directory
 clean: 
