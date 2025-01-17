@@ -1,0 +1,31 @@
+CAPI=2:
+name: "fzi:xilinx:zcu102_ddr4"
+description: "DDR4 memory interface for ZCU102"
+filesets:
+  files_rtl:
+   depend:
+      - pulp-platform.org::axi
+      - lowrisc:ip:tlul
+   files:
+      - src/ddr4_tlul_xilinx.sv
+      - src/ddr4_tlul_xilinx.sv
+      - src/tlul2axi.sv
+      - src/tlul2axi_pkg.sv
+   file_type: systemVerilogSource
+  
+  files_tcl:
+    files:
+      - src/zcu102_ddr4.tcl
+    file_type: tclSource
+  
+  constraints:
+    files:
+      - data/zcu102_ddr4.xdc
+    file_type: xdc
+
+targets:
+  default:
+    filesets:
+      - files_tcl
+      - files_rtl
+      - constraints

@@ -8,7 +8,10 @@ module system_multicore #(
     parameter ManagementCoreScratchpadInstr = ""
 ) (
     input logic clk_sys_i,
-    input logic rst_sys_ni,
+    input logic rst_sys_ni, // active-low
+
+    input logic ddr4_clk,
+    input logic ddr4_rst,   // active-high 
 
     input  logic uart_rx_i,
     output logic uart_tx_o
@@ -49,6 +52,8 @@ tlul_pkg::tl_h2d_t dma_host_port_req;
 tlul_pkg::tl_d2h_t dma_host_port_rsp;
 tlul_pkg::tl_h2d_t dma_register_port_req;
 tlul_pkg::tl_d2h_t dma_register_port_rsp;
+tlul_pkg::tl_h2d_t dma_main_memory_req;
+tlul_pkg::tl_d2h_t dma_main_memory_rsp;
 
 tlul_pkg::tl_h2d_t management_scratchpad_instr_req;
 tlul_pkg::tl_d2h_t management_scratchpad_instr_rsp;
@@ -201,13 +206,32 @@ dma #() u_dma(
     .host_tl_h_o(dma_host_port_req),
 
     // CTN Port (Memory Interface, towards the Main Memory)
-    .ctn_tl_d2h_i(),
-    .ctn_tl_h2d_o(),
+    .ctn_tl_d2h_i(dma_main_memory_rsp),
+    .ctn_tl_h2d_o(dma_main_memory_req),
 
     // System Port, unused
     .sys_i(),
     .sys_o()
 );
+
+`ifdef FPGA_XILINX
+// --- main memory ---
+ddr4_tlul_xilinx main_memory(
+    .clk_i(clk_sys_i),
+    .rst_ni(rst_sys_ni),
+    
+    .ddr4_clk(ddr4_clk),
+    .ddr4_reset(ddr4_rst),
+
+    .tl_i(dma_main_memory_req),
+    .tl_o(dma_main_memory_rsp),
+
+    .init_calib_done_o(),
+
+    // Phy
+    .*
+)
+`endif
 
 // --- scratchpad management ---
 sram #(

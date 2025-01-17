@@ -8,6 +8,7 @@ filesets:
       - "lowrisc:ip:xbar_main:0.1"
       - "lowrisc:ip:xbar_management_peripherals:0.1"
       - "lowrisc:ip:dma:0.1"
+      - "fzi:xilinx:fzi:xilinx:zcu102_ddr4"
       - "fzi:ip:simple_uart"
       - "fzi:ip:sram:0.1"
       - "fzi:ip:vicuna_tlul:0.1"
