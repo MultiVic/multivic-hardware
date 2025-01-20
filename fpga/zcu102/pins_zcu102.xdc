@@ -1,4 +1,26 @@
-#--------------------Physical Constraints-----------------
+# ----------- System Clock ----------- #
+
+set_property IOSTANDARD LVDS_25 [get_ports clk_125_n]
+set_property PACKAGE_PIN G21    [get_ports clk_125_p]
+set_property PACKAGE_PIN F21    [get_ports clk_125_n]
+set_property IOSTANDARD LVDS_25 [get_ports clk_125_p]
+
+create_clock -period 8.000 -name sys_clk_pin -add [get_nets clk_sys]
+
+# --------------- Reset -------------- #
+
+set_property PACKAGE_PIN AM13 [get_ports cpu_reset]
+set_property IOSTANDARD LVCMOS33 [get_ports cpu_reset]
+
+# --------------- UART --------------- #
+
+set_property -dict { PACKAGE_PIN F13   IOSTANDARD LVCMOS33 } [get_ports { uart_tx }]
+set_property -dict { PACKAGE_PIN E13    IOSTANDARD LVCMOS33 } [get_ports { uart_rx }]
+
+# --------------- DDR4 --------------- #
+
+set_property BOARD_PART_PIN {user_si570_sysclk_n} [get_ports c0_sys_clk_n]
+set_property BOARD_PART_PIN {user_si570_sysclk_p} [get_ports c0_sys_clk_p]
 
 set_property BOARD_PART_PIN {c0_ddr4_act_n} [get_ports c0_ddr4_act_n]
 
@@ -61,6 +83,3 @@ set_property BOARD_PART_PIN {c0_ddr4_dqs_t1} [get_ports c0_ddr4_dqs_t[1]]
 set_property BOARD_PART_PIN {c0_ddr4_odt} [get_ports c0_ddr4_odt]
 
 set_property BOARD_PART_PIN {c0_ddr4_reset_n} [get_ports c0_ddr4_reset_n]
-
-set_property BOARD_PART_PIN {user_si570_sysclk_n} [get_ports c0_sys_clk_n]
-set_property BOARD_PART_PIN {user_si570_sysclk_p} [get_ports c0_sys_clk_p]

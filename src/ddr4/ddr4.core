@@ -17,15 +17,9 @@ filesets:
     files:
       - src/zcu102_ddr4.tcl
     file_type: tclSource
-  
-  constraints:
-    files:
-      - data/zcu102_ddr4.xdc
-    file_type: xdc
 
 targets:
   default:
     filesets:
       - files_tcl
       - files_rtl
-      - constraints

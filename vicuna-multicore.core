@@ -8,7 +8,6 @@ filesets:
       - "lowrisc:ip:xbar_main:0.1"
       - "lowrisc:ip:xbar_management_peripherals:0.1"
       - "lowrisc:ip:dma:0.1"
-      - "fzi:xilinx:fzi:xilinx:zcu102_ddr4"
       - "fzi:ip:simple_uart"
       - "fzi:ip:sram:0.1"
       - "fzi:ip:vicuna_tlul:0.1"
@@ -30,6 +29,15 @@ filesets:
       - "simulation/verilator.h":  { file_type: cppSource, is_include_file: true}
     #  - "dv/verilator/vicuna_demo_system_main.cc" : { file_type: cppSource }
     #  - dv/verilator/demo_system_verilator_lint.vlt:  { file_type: vlt }
+  
+  zcu102:
+    depend:
+      - "fzi:xilinx:zcu102_ddr4"
+      - "lowrisc_xif:ibex:fpga_xilinx_shared"
+    files:
+      - "fpga/zcu102/top_zcu102.sv": { file_type: systemVerilogSource }
+      - "fpga/zcu102/pins_zcu102.xdc": { file_type: xdc }
+
 
 parameters:
   ScratchpadDataInitFile:
@@ -87,4 +95,15 @@ targets:
     flags:
       use_bscane_tap: false
 
-
+  synth_zcu102:
+    <<: *default
+    description: "Synthesize the design for the ZCU102 board"
+    filesets_append:
+      - zcu102
+    default_tool: vivado
+    toplevel: top_zcu102
+    tools:
+      vivado:
+        part: "xczu9eg-ffvb1156-2-e"
+        board_part: "xilinx.com:zcu102:part0:3.4"
+        jobs: 64
