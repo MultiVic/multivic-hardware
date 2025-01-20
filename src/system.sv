@@ -30,7 +30,7 @@ module system_multicore #(
     inout  [1:0]         c0_ddr4_dm_dbi_n,
     inout  [15:0]        c0_ddr4_dq,
     inout  [1:0]         c0_ddr4_dqs_c,
-    inout  [1:0]         c0_ddr4_dqs_t,
+    inout  [1:0]         c0_ddr4_dqs_t
 
 ); 
 
@@ -247,7 +247,7 @@ ddr4_tlul_xilinx main_memory(
 
     // Phy
     .*
-)
+);
 `endif
 
 // --- scratchpad management ---

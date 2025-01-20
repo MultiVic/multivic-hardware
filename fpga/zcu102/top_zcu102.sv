@@ -1,6 +1,6 @@
 module top_zcu102 #(
-    parameter ManagementCoreScratchpadInstr = "",
-    parameter ManagementCoreScratchpadData = ""
+    parameter ManagementCoreScratchpadInstr = "/home/kirschner/work/vicuna-software/rom.vmem",
+    parameter ManagementCoreScratchpadData = "/home/kirschner/work/vicuna-software/ram.vmem"
 )(
     input           clk_125_p,
     input           clk_125_n,
@@ -31,8 +31,8 @@ module top_zcu102 #(
 
 // Generating the system clock and reset for the FPGA.
 clkgen_xilusp clkgen(
-    .IO_CLK_P(CLK_125_P),
-    .IO_CLK_N(CLK_125_N),
+    .IO_CLK_P(clk_125_p),
+    .IO_CLK_N(clk_125_n),
     .IO_RST_N(!CPU_RESET),
     .clk_sys,
     .rst_sys_n
@@ -55,7 +55,7 @@ system_multicore #(
     .rst_sys_ni(rst_sys_n),
 
     .ddr4_clk_i(clk_ddr4),
-    .ddr4_reset_i(rst_ddr4),
+    .ddr4_rst_i(rst_ddr4),
 
     .uart_rx_i(uart_rx),
     .uart_tx_o(uart_tx),
