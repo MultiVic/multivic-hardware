@@ -7,3 +7,9 @@
 [submodule "submodules/ibex-xif"]
 	path = submodules/ibex-xif
 	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/ibex-xif.git
+[submodule "submodules/axi"]
+	path = submodules/axi
+	url = https://github.com/pulp-platform/axi.git
+[submodule "submodules/common_cells"]
+	path = submodules/common_cells
+	url = https://github.com/pulp-platform/common_cells.git
