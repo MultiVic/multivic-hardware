@@ -5,8 +5,6 @@ set_property PACKAGE_PIN G21    [get_ports clk_125_p]
 set_property PACKAGE_PIN F21    [get_ports clk_125_n]
 set_property IOSTANDARD LVDS_25 [get_ports clk_125_p]
 
-create_clock -period 8.000 -name sys_clk_pin -add [get_nets clk_sys]
-
 # --------------- Reset -------------- #
 
 set_property PACKAGE_PIN AM13 [get_ports cpu_reset]

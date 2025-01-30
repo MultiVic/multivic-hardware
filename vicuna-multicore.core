@@ -37,6 +37,7 @@ filesets:
     files:
       - "fpga/zcu102/top_zcu102.sv": { file_type: systemVerilogSource }
       - "fpga/zcu102/pins_zcu102.xdc": { file_type: xdc }
+      - "fpga/zcu102/clocks_zcu102.xdc": { file_type: xdc }
 
 
 parameters:
@@ -107,3 +108,5 @@ targets:
         part: "xczu9eg-ffvb1156-2-e"
         board_part: "xilinx.com:zcu102:part0:3.4"
         jobs: 64
+    parameters:
+      - PRIM_DEFAULT_IMPL=prim_pkg::ImplXilinx_ultrascale

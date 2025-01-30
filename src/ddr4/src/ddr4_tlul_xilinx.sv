@@ -59,7 +59,7 @@ ddr4_wrapper_xilinx #(
     .axi_soc_r_chan_t  (tlul2axi_pkg::slv_r_chan_t),
     .axi_soc_req_t     (tlul2axi_pkg::slv_req_t),
     .axi_soc_resp_t    (tlul2axi_pkg::slv_rsp_t)
-)(
+)i_ddr4_wrapper_xilinx(
     .soc_clk_i(clk_i),
     .soc_resetn_i(rst_ni),
 
