@@ -4,6 +4,7 @@
 //
 // Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 //
+`include "axi/typedef.svh"
 
 module ddr4_wrapper_xilinx #(
   parameter type axi_soc_aw_chan_t = logic,

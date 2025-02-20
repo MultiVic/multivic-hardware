@@ -9,6 +9,8 @@
 // specific language governing permissions and limitations under the License.
 //  
 
+`include "axi/typedef.svh"
+
 package tlul2axi_pkg;
    
   parameter int unsigned AXI_ID_WIDTH            = 4; 

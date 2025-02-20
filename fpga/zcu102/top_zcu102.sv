@@ -29,20 +29,25 @@ module top_zcu102 #(
     inout  [1:0]    c0_ddr4_dqs_t
 );
 
+logic clk_sys, rst_sys_n;
+logic clk_ddr4, rst_ddr4;
+
 // Generating the system clock and reset for the FPGA.
 clkgen_xilusp clkgen(
     .IO_CLK_P(clk_125_p),
     .IO_CLK_N(clk_125_n),
-    .IO_RST_N(!CPU_RESET),
+    .IO_RST_N(!cpu_reset),
     .clk_sys,
     .rst_sys_n
 );
 
 // Generate the clock and reset for the DDR4 compoinent
-clkgen_xilusp clkgen_ddr4(
+clkgen_xilusp #(
+    .BYPASS_PLL(1)
+) clkgen_ddr4(
     .IO_CLK_P(c0_sys_clk_p),
     .IO_CLK_N(c0_sys_clk_n),
-    .IO_RST_N(CPU_RESET),
+    .IO_RST_N(cpu_reset),
     .clk_sys(clk_ddr4),
     .rst_sys_n(rst_ddr4)
 );

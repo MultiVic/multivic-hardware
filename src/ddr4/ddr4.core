@@ -7,10 +7,11 @@ filesets:
       - pulp-platform.org::axi
       - lowrisc:ip:tlul
    files:
-      - src/ddr4_tlul_xilinx.sv
       - src/ddr4_wrapper_xilinx.sv
-      - src/tlul2axi.sv
       - src/tlul2axi_pkg.sv
+      - src/tlul2axi.sv
+      - src/ddr4_tlul_xilinx.sv
+      
    file_type: systemVerilogSource
   
   files_tcl:
