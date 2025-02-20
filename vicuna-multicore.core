@@ -1,5 +1,5 @@
 CAPI=2:
-name: "ess-fzi:vicuna:multicore:0.0.1"
+name: "fzi:vicuna:multicore:0.0.1"
 description: "a multicore system with one management core and multiple ai accellerator cores"
 filesets:
   rtl:
