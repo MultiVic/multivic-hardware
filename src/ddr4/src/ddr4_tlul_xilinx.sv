@@ -6,7 +6,9 @@ module ddr4_tlul_xilinx (
     input logic clk_i,
     input logic rst_ni,
 
-    input logic ddr4_clk,
+    input logic ddr4_clk_p,
+    input logic ddr4_clk_n,
+
     input logic ddr4_reset,
 
     // Phy interface
@@ -29,7 +31,8 @@ module ddr4_tlul_xilinx (
     input   tlul_pkg::tl_h2d_t     tl_i,
     output  tlul_pkg::tl_d2h_t     tl_o,
 
-    output logic         init_calib_done_o
+    output logic         init_calib_done_o,
+    output logic         dram_clk_o
 );
 
 tlul2axi_pkg::slv_req_t axi_req;
@@ -63,10 +66,12 @@ ddr4_wrapper_xilinx #(
     .soc_clk_i(clk_i),
     .soc_resetn_i(rst_ni),
 
-    .dram_clk_i(ddr4_clk),
+    .dram_clk_pi(ddr4_clk_p),
+    .dram_clk_ni(ddr4_clk_n),
     .sys_rst_i(ddr4_reset),
 
     .init_calib_done_o(init_calib_done_o),
+    .dram_clk_o(dram_clk_o),
 
     // AXI interface
     .soc_req_i(axi_req),

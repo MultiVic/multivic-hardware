@@ -18,7 +18,9 @@ module ddr4_wrapper_xilinx #(
 (
   // System reset
   input                 sys_rst_i,
-  input                 dram_clk_i,
+  input                 dram_clk_pi,
+  input                 dram_clk_ni,
+  
   // Controller reset
   input                 soc_resetn_i,
   input                 soc_clk_i,
@@ -42,7 +44,8 @@ module ddr4_wrapper_xilinx #(
   input  axi_soc_req_t  soc_req_i,
   output axi_soc_resp_t soc_rsp_o,
 
-  output                init_calib_done_o
+  output                init_calib_done_o,
+  output                dram_clk_o
 );
 
 
@@ -211,7 +214,8 @@ assign cdc_dram_req_ar_addr = cdc_dram_req.ar.addr[cfg.AddrWidth-1:0];
 
 xlnx_mig_ddr4 u_ddr4_0 (
   .sys_rst                   (sys_rst_i), // Active high
-  .c0_sys_clk_i              (dram_clk_i),
+  .c0_sys_clk_n              (dram_clk_ni),
+  .c0_sys_clk_p              (dram_clk_pi),
   .c0_ddr4_aresetn           (soc_resetn_i),
   // Clk rst out
   .c0_ddr4_ui_clk            (dram_axi_clk),

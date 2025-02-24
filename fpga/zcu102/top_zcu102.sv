@@ -12,6 +12,8 @@ module top_zcu102 #(
 
     input           c0_sys_clk_n,
     input           c0_sys_clk_p,
+    
+    output [7:0]    gpio_led,
 
     output          c0_ddr4_act_n,
     output [16:0]   c0_ddr4_adr,
@@ -32,16 +34,33 @@ module top_zcu102 #(
 logic clk_sys, rst_sys_n;
 logic clk_ddr4, rst_ddr4;
 
-// Generating the system clock and reset for the FPGA.
-clkgen_xilusp clkgen(
-    .IO_CLK_P(clk_125_p),
-    .IO_CLK_N(clk_125_n),
-    .IO_RST_N(!cpu_reset),
-    .clk_sys,
-    .rst_sys_n
+tlul_pkg::tl_h2d_t dma_main_memory_req;
+tlul_pkg::tl_d2h_t dma_main_memory_rsp;
+
+assign rst_sys_n = !cpu_reset;
+assign rst_ddr4  = cpu_reset;
+
+// --- main memory ---
+ddr4_tlul_xilinx main_memory(
+    .clk_i(clk_sys),
+    .rst_ni(rst_sys_n),
+    
+    .ddr4_clk_p(c0_sys_clk_p),
+    .ddr4_clk_n(c0_sys_clk_n),
+    .ddr4_reset(rst_ddr4),
+
+    .tl_i(dma_main_memory_req),
+    .tl_o(dma_main_memory_rsp),
+
+    .init_calib_done_o(),
+    .dram_clk_o(clk_sys),
+
+    // Phy
+    .*
 );
 
 // Generate the clock and reset for the DDR4 compoinent
+/*
 clkgen_xilusp #(
     .BYPASS_PLL(1)
 ) clkgen_ddr4(
@@ -51,6 +70,7 @@ clkgen_xilusp #(
     .clk_sys(clk_ddr4),
     .rst_sys_n(rst_ddr4)
 );
+*/
 
 system_multicore #(
     .ManagementCoreScratchpadInstr(ManagementCoreScratchpadInstr),
@@ -65,9 +85,23 @@ system_multicore #(
     .uart_rx_i(uart_rx),
     .uart_tx_o(uart_tx),
 
-    // DDR4 Phy interface
-    .*
+    .dma_main_memory_req_o(dma_main_memory_req),
+    .dma_main_memory_rsp_i(dma_main_memory_rsp)
 );
 
+// Blink LEDs with different clock frequencies to test clock signals
+logic [31:0] counter_sys;
+logic [31:0] counter_ddr4;
+
+always @ (posedge clk_sys) begin
+    counter_sys <= counter_sys + 1;
+end
+
+always @ (posedge clk_ddr4) begin
+    counter_ddr4 <= counter_ddr4 + 1;
+end
+
+assign gpio_led[0] = counter_sys[25];
+assign gpio_led[1] = counter_ddr4[25];
 
 endmodule

@@ -16,22 +16,8 @@ module system_multicore #(
     input  logic uart_rx_i,
     output logic uart_tx_o,
 
-    // DDR4 Phy interface
-    output               c0_ddr4_reset_n,
-    output [0:0]         c0_ddr4_ck_t,
-    output [0:0]         c0_ddr4_ck_c,
-    output               c0_ddr4_act_n,
-    output [16:0]        c0_ddr4_adr,
-    output [1:0]         c0_ddr4_ba,
-    output [0:0]         c0_ddr4_bg,
-    output [0:0]         c0_ddr4_cke,
-    output [0:0]         c0_ddr4_odt,
-    output [0:0]         c0_ddr4_cs_n,
-    inout  [1:0]         c0_ddr4_dm_dbi_n,
-    inout  [15:0]        c0_ddr4_dq,
-    inout  [1:0]         c0_ddr4_dqs_c,
-    inout  [1:0]         c0_ddr4_dqs_t
-
+    output tlul_pkg::tl_h2d_t dma_main_memory_req_o,
+    input  tlul_pkg::tl_d2h_t dma_main_memory_rsp_i
 ); 
 
 // --- mhp performance counter for verilator ---
@@ -69,8 +55,7 @@ tlul_pkg::tl_h2d_t dma_host_port_req;
 tlul_pkg::tl_d2h_t dma_host_port_rsp;
 tlul_pkg::tl_h2d_t dma_register_port_req;
 tlul_pkg::tl_d2h_t dma_register_port_rsp;
-tlul_pkg::tl_h2d_t dma_main_memory_req;
-tlul_pkg::tl_d2h_t dma_main_memory_rsp;
+
 
 tlul_pkg::tl_h2d_t management_scratchpad_instr_req;
 tlul_pkg::tl_d2h_t management_scratchpad_instr_rsp;
@@ -152,11 +137,18 @@ xbar_management_peripherals #() u_xbar_management_peripherals(
 
 // --- management core ---
 rv_core_ibex #(
-    .PMPEnable('b0),
-    .MHPMCounterNum( 10),
-    .RegFile(RegFile),
-    .ICache('b0),
-    .SecureIbex('b0)
+    .PMPEnable          ('b0),
+    .MHPMCounterNum     ( 10),
+    .RegFile            (RegFile),
+    .BranchTargetALU    (1'b0),
+    .WritebackStage     (1'b0),
+    .ICache             (1'b0),
+    .ICacheECC          (1'b0),
+    .ICacheScramble     (1'b0),
+    .BranchPredictor    (1'b0),
+    .DbgTriggerEn       (1'b0),
+    .DbgHwBreakNum      (  1),
+    .SecureIbex         ('b0)
 ) management_core_ibex (
     .alert_tx_o  (),
     .alert_rx_i  (),
@@ -230,25 +222,6 @@ dma #() u_dma(
     .sys_i(),
     .sys_o()
 );
-
-`ifdef FPGA_XILINX
-// --- main memory ---
-ddr4_tlul_xilinx main_memory(
-    .clk_i(clk_sys_i),
-    .rst_ni(rst_sys_ni),
-    
-    .ddr4_clk(ddr4_clk_i),
-    .ddr4_reset(ddr4_rst_i),
-
-    .tl_i(dma_main_memory_req),
-    .tl_o(dma_main_memory_rsp),
-
-    .init_calib_done_o(),
-
-    // Phy
-    .*
-);
-`endif
 
 // --- scratchpad management ---
 sram #(
