@@ -1,6 +1,6 @@
 
 module system_multicore #(
-    parameter int unsigned ClockFrequency   = 125_000_000,
+    parameter int unsigned ClockFrequency   = 100_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
     parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
@@ -215,8 +215,8 @@ dma #() u_dma(
     .host_tl_h_o(dma_host_port_req),
 
     // CTN Port (Memory Interface, towards the Main Memory)
-    .ctn_tl_d2h_i(dma_main_memory_rsp),
-    .ctn_tl_h2d_o(dma_main_memory_req),
+    .ctn_tl_d2h_i(dma_main_memory_rsp_i),
+    .ctn_tl_h2d_o(dma_main_memory_req_o),
 
     // System Port, unused
     .sys_i(),

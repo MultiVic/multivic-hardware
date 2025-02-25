@@ -59,19 +59,6 @@ ddr4_tlul_xilinx main_memory(
     .*
 );
 
-// Generate the clock and reset for the DDR4 compoinent
-/*
-clkgen_xilusp #(
-    .BYPASS_PLL(1)
-) clkgen_ddr4(
-    .IO_CLK_P(c0_sys_clk_p),
-    .IO_CLK_N(c0_sys_clk_n),
-    .IO_RST_N(cpu_reset),
-    .clk_sys(clk_ddr4),
-    .rst_sys_n(rst_ddr4)
-);
-*/
-
 system_multicore #(
     .ManagementCoreScratchpadInstr(ManagementCoreScratchpadInstr),
     .ManagementCoreScratchpadData(ManagementCoreScratchpadData)
@@ -88,20 +75,5 @@ system_multicore #(
     .dma_main_memory_req_o(dma_main_memory_req),
     .dma_main_memory_rsp_i(dma_main_memory_rsp)
 );
-
-// Blink LEDs with different clock frequencies to test clock signals
-logic [31:0] counter_sys;
-logic [31:0] counter_ddr4;
-
-always @ (posedge clk_sys) begin
-    counter_sys <= counter_sys + 1;
-end
-
-always @ (posedge clk_ddr4) begin
-    counter_ddr4 <= counter_ddr4 + 1;
-end
-
-assign gpio_led[0] = counter_sys[25];
-assign gpio_led[1] = counter_ddr4[25];
 
 endmodule
