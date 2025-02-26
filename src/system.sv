@@ -1,6 +1,6 @@
 
 module system_multicore #(
-    parameter int unsigned ClockFrequency   = 100_000_000,
+    parameter int unsigned ClockFrequency   = 125_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
     parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
@@ -138,7 +138,7 @@ xbar_management_peripherals #() u_xbar_management_peripherals(
 // --- management core ---
 rv_core_ibex #(
     .PMPEnable          ('b0),
-    .MHPMCounterNum     ( 10),
+    .MHPMCounterNum     ( 2),
     .RegFile            (RegFile),
     .BranchTargetALU    (1'b0),
     .WritebackStage     (1'b0),

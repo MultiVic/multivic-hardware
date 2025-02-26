@@ -11,7 +11,7 @@ set_property -dict [list CONFIG.C0_DDR4_BOARD_INTERFACE {ddr4_sdram_062} \
                            CONFIG.C0.DDR4_AxiDataWidth {128} \
                            CONFIG.C0.DDR4_AxiAddressWidth {29} \
                            CONFIG.C0.DDR4_AxiIDWidth {8} \
-                           CONFIG.ADDN_UI_CLKOUT1_FREQ_HZ {100} \
+                           CONFIG.ADDN_UI_CLKOUT1_FREQ_HZ {125} \
                            CONFIG.System_Clock {Differential} \
                            CONFIG.Reference_Clock {No_Buffer} \
                            CONFIG.C0.BANK_GROUP_WIDTH {1} \
