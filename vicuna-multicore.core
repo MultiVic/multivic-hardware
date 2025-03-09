@@ -30,14 +30,26 @@ filesets:
     #  - "dv/verilator/vicuna_demo_system_main.cc" : { file_type: cppSource }
     #  - dv/verilator/demo_system_verilator_lint.vlt:  { file_type: vlt }
   
+  fpga_common:
+    depend:
+      - "lowrisc_xif:ibex:fpga_xilinx_shared"
+    files:
+      - "fpga/clocks.xdc": { file_type: xdc }
+      - "configure_vivado_project.tcl": { file_type: tcl }
+
   zcu102:
     depend:
       - "fzi:xilinx:zcu102_ddr4"
-      - "lowrisc_xif:ibex:fpga_xilinx_shared"
     files:
       - "fpga/zcu102/top_zcu102.sv": { file_type: systemVerilogSource }
       - "fpga/zcu102/pins_zcu102.xdc": { file_type: xdc }
-      - "fpga/zcu102/clocks_zcu102.xdc": { file_type: xdc }
+
+  vcu128:
+    depend:
+      - "fzi:xilinx:vcu128_ddr4"
+    files:
+      - "fpga/vcu128/top_vcu128.sv": { file_type: systemVerilogSource }
+      - "fpga/vcu128/pins_vcu128.xdc": { file_type: xdc }
 
 
 parameters:
@@ -53,6 +65,16 @@ parameters:
     datatype: "str"
     description: "Primitives implementation to use, e.g. prim_pkg::ImplGeneric."
     paramtype: "vlogdefine"
+  TARGET_ZCU102:
+    datatype: "bool"
+    description: "Target the ZCU102 board."
+    paramtype: "vlogdefine"
+  TARGET_VCU128:
+    datatype: "bool"
+    description: "Target the VCU128 board."
+    paramtype: "vlogdefine"
+  
+
 
 targets:
   default: &default
@@ -100,6 +122,7 @@ targets:
     <<: *default
     description: "Synthesize the design for the ZCU102 board"
     filesets_append:
+      - fpga_common
       - zcu102
     default_tool: vivado
     toplevel: top_zcu102
@@ -110,3 +133,21 @@ targets:
         jobs: 64
     parameters:
       - PRIM_DEFAULT_IMPL=prim_pkg::ImplXilinx_ultrascale
+      - TARGET_ZCU102=true
+
+  synth_vcu128:
+    <<: *default
+    description: "Synthesize the design for the VCU128 board"
+    filesets_append:
+      - fpga_common
+      - vcu128
+    default_tool: vivado
+    toplevel: top_vcu128
+    tools:
+      vivado:
+        part: "xcvu37p-fsvh2892-2L-e"
+        board_part: "xilinx.com:vcu128:part0:1.0"
+        jobs: 64
+    parameters:
+      - PRIM_DEFAULT_IMPL=prim_pkg::ImplXilinx_ultrascale
+      - TARGET_VCU128=true

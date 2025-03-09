@@ -1,9 +1,9 @@
-module top_zcu102 #(
+module top_vcu128 #(
     parameter ManagementCoreScratchpadInstr = "/home/kirschner/work/vicuna-software/rom.vmem",
     parameter ManagementCoreScratchpadData = "/home/kirschner/work/vicuna-software/ram.vmem"
 )(
-    input           clk_125_p,
-    input           clk_125_n,
+    input           ddr4_clk_100mhz_n,
+    input           ddr4_clk_100mhz_p,
 
     input           cpu_reset,
 
@@ -21,14 +21,14 @@ module top_zcu102 #(
     output [0:0]    c0_ddr4_bg,
     output [0:0]    c0_ddr4_cke,
     output [0:0]    c0_ddr4_odt,
-    output [0:0]    c0_ddr4_cs_n,
+    output [1:0]    c0_ddr4_cs_n,
     output [0:0]    c0_ddr4_ck_t,
     output [0:0]    c0_ddr4_ck_c,
     output          c0_ddr4_reset_n,
-    inout  [1:0]    c0_ddr4_dm_dbi_n,
-    inout  [15:0]   c0_ddr4_dq,
-    inout  [1:0]    c0_ddr4_dqs_c,
-    inout  [1:0]    c0_ddr4_dqs_t
+    inout  [8:0]    c0_ddr4_dm_dbi_n,
+    inout  [71:0]   c0_ddr4_dq,
+    inout  [8:0]    c0_ddr4_dqs_c,
+    inout  [8:0]    c0_ddr4_dqs_t
 );
 
 logic clk_sys, rst_sys_n;
@@ -45,8 +45,8 @@ ddr4_tlul_xilinx main_memory(
     .clk_i(clk_sys),
     .rst_ni(rst_sys_n),
     
-    .ddr4_clk_p(c0_sys_clk_p),
-    .ddr4_clk_n(c0_sys_clk_n),
+    .ddr4_clk_p(ddr4_clk_100mhz_p),
+    .ddr4_clk_n(ddr4_clk_100mhz_n),
     .ddr4_reset(rst_ddr4),
 
     .tl_i(dma_main_memory_req),

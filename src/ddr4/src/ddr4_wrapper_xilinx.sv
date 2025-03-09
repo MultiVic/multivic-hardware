@@ -5,6 +5,7 @@
 // Cyril Koenig <cykoenig@iis.ee.ethz.ch>
 //
 `include "axi/typedef.svh"
+`include "typedef.svh"
 
 module ddr4_wrapper_xilinx #(
   parameter type axi_soc_aw_chan_t = logic,
@@ -24,21 +25,15 @@ module ddr4_wrapper_xilinx #(
   // Controller reset
   input                 soc_resetn_i,
   input                 soc_clk_i,
-  // Phy interface
-  output               c0_ddr4_reset_n,
-  output [0:0]         c0_ddr4_ck_t,
-  output [0:0]         c0_ddr4_ck_c,
-  output               c0_ddr4_act_n,
-  output [16:0]        c0_ddr4_adr,
-  output [1:0]         c0_ddr4_ba,
-  output [0:0]         c0_ddr4_bg,
-  output [0:0]         c0_ddr4_cke,
-  output [0:0]         c0_ddr4_odt,
-  output [0:0]         c0_ddr4_cs_n,
-  inout  [1:0]         c0_ddr4_dm_dbi_n,
-  inout  [15:0]        c0_ddr4_dq,
-  inout  [1:0]         c0_ddr4_dqs_c,
-  inout  [1:0]         c0_ddr4_dqs_t,
+  
+  // DDR4 Interface
+`ifdef TARGET_ZCU102
+  `DDR4_INTF_ZCU102
+`endif
+
+`ifdef TARGET_VCU128
+  `DDR4_INTF_VCU128
+`endif
 
   // Dram axi interface
   input  axi_soc_req_t  soc_req_i,
@@ -258,6 +253,27 @@ xlnx_mig_ddr4 u_ddr4_0 (
   .c0_ddr4_s_axi_rresp       (cdc_dram_rsp.r.resp),
   .c0_ddr4_s_axi_rlast       (cdc_dram_rsp.r.last),
   .c0_ddr4_s_axi_rvalid      (cdc_dram_rsp.r_valid),
+
+`ifdef TARGET_VCU128
+  // AXI control
+  .c0_ddr4_s_axi_ctrl_awvalid ( '0 ),
+  .c0_ddr4_s_axi_ctrl_awready ( ),
+  .c0_ddr4_s_axi_ctrl_awaddr  ( '0 ),
+  .c0_ddr4_s_axi_ctrl_wvalid  ( '0 ),
+  .c0_ddr4_s_axi_ctrl_wready  ( ),
+  .c0_ddr4_s_axi_ctrl_wdata   ( '0 ),
+  .c0_ddr4_s_axi_ctrl_bvalid  ( ),
+  .c0_ddr4_s_axi_ctrl_bready  ( '0 ),
+  .c0_ddr4_s_axi_ctrl_bresp   ( ),
+  .c0_ddr4_s_axi_ctrl_arvalid ( '0 ),
+  .c0_ddr4_s_axi_ctrl_arready ( ),
+  .c0_ddr4_s_axi_ctrl_araddr  ( '0 ),
+  .c0_ddr4_s_axi_ctrl_rvalid  ( ),
+  .c0_ddr4_s_axi_ctrl_rready  ( '0 ),
+  .c0_ddr4_s_axi_ctrl_rdata   ( ),
+  .c0_ddr4_s_axi_ctrl_rresp   ( ),
+  .c0_ddr4_interrupt          ( ),
+`endif
 
   // Others
   .c0_init_calib_complete    (init_calib_done_o),

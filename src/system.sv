@@ -1,6 +1,6 @@
 
 module system_multicore #(
-    parameter int unsigned ClockFrequency   = 125_000_000,
+    parameter int unsigned ClockFrequency   = 100_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
     parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
@@ -9,9 +9,6 @@ module system_multicore #(
 ) (
     input logic clk_sys_i,
     input logic rst_sys_ni, // active-low
-
-    input logic ddr4_clk_i,
-    input logic ddr4_rst_i,   // active-high 
 
     input  logic uart_rx_i,
     output logic uart_tx_o,
