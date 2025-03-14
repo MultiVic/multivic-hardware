@@ -4,8 +4,10 @@ module system_multicore #(
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
     parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
-    parameter ManagementCoreScratchpadData  = "",
-    parameter ManagementCoreScratchpadInstr = ""
+    parameter ManagementDataFile = "",
+    parameter ManagementInstrFile = "",
+    parameter VectorInstrFile = "",
+    parameter VectorDataFile = ""
 ) (
     input logic clk_sys_i,
     input logic rst_sys_ni,
@@ -184,7 +186,7 @@ dma #() u_dma(
 // --- scratchpad management ---
 sram #(
     .MemSize    (64 * 1024), // 64 KiB
-    .MemInitFile(ManagementCoreScratchpadInstr)
+    .MemInitFile(ManagementInstrFile)
 ) management_scratchpad_instr (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
@@ -199,7 +201,7 @@ sram #(
 
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadData)
+    .MemInitFile (ManagementDataFile)
 ) management_scratchpad_data (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),

@@ -31,18 +31,27 @@ filesets:
     #  - dv/verilator/demo_system_verilator_lint.vlt:  { file_type: vlt }
 
 parameters:
-  ScratchpadDataInitFile:
-    datatype: "str"
-    description: "the initial data memory for the scratchpad memory of the management core"
-    paramtype: "vlogparam"
-  ScratchpadInstrInitFile:
-    datatype: "str"
-    description: "the initial instruction memory for the scratchpad memory of the management core"
-    paramtype: "vlogparam"
   PRIM_DEFAULT_IMPL:
     datatype: "str"
     description: "Primitives implementation to use, e.g. prim_pkg::ImplGeneric."
     paramtype: "vlogdefine"
+  ManagementDataFile:
+    datatype: "str"
+    description: "the initial data memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+  ManagementInstrFile:
+    datatype: "str"
+    description: "the initial data memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+  VectorInstrFile:
+    datatype: "str"
+    description: "the initial data memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+  VectorDataFile:
+    datatype: "str"
+    description: "the initial data memory for the scratchpad memory of the management core"
+    paramtype: "vlogparam"
+ 
 
 targets:
   default: &default

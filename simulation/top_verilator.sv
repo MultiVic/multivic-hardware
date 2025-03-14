@@ -15,8 +15,12 @@ module top_verilator (input logic clk_i, rst_ni);
     .ClockFrequency ( ClockFrequency      ),
     .BaudRate       ( BaudRate            ),
     .RegFile        ( ibex_pkg::RegFileFF ),
-    .ManagementCoreScratchpadData  ( "/home/krusekamp/vicuna-software/build/sram/ManagementCoreData.vmem"),
-    .ManagementCoreScratchpadInstr ( "/home/krusekamp/vicuna-software/build/sram/ManagementCoreInstr.vmem" )
+    .ManagementDataFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/ram.vmem"),
+    .ManagementInstrFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/rom.vmem"),
+    //.ManagementInstrFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem" ),
+    //.ManagementDataFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/ram.vmem" ),
+    .VectorInstrFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem" ),
+    .VectorDataFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/ram.vmem" )
   ) u_verilator_multicore (
     // sys signals
     .clk_sys_i (clk_i),

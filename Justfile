@@ -17,7 +17,13 @@ setup:
 
 # Run the project using verilator
 run *OPTIONS: 
-    ./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator {{OPTIONS}}
+    ./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator \
+    {{OPTIONS}}
+    #-CFLAGS \
+    #-D VectorDataFile="$SOFTWARE_PATH/vector_loader/build/ram.vmem" \
+    #-D VectorInstrFile="$SOFTWARE_PATH/vector_loader/build/rom.vmem" \
+    #-D ManagementDataFile="$SOFTWARE_PATH/build/ram.vmem" \
+    #-D ManagementInstrFile="$SOFTWARE_PATH/build/rom.vmem"
 
 # Clean the build directory
 clean: 

@@ -21,7 +21,7 @@ rv_core_vicuna #(
 // --- scratchpad CORE_NAME ---
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadInstr)
+    .MemInitFile (VectorInstrFile)
 ) CORE_NAME_scratchpad_instr (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
@@ -36,7 +36,7 @@ sram #(
 
 sram #(
     .MemSize     (64 * 1024), // 64 KiB
-    .MemInitFile (ManagementCoreScratchpadData)
+    .MemInitFile (VectorDataFile)
 ) CORE_NAME_scratchpad_data (
     .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
