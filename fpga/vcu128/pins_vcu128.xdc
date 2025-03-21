@@ -1,0 +1,28 @@
+set_property PACKAGE_PIN BJ51       [get_ports ddr4_clk_100mhz_n]
+set_property IOSTANDARD DIFF_SSTL12 [get_ports ddr4_clk_100mhz_n]
+set_property PACKAGE_PIN BH51       [get_ports ddr4_clk_100mhz_p]
+set_property IOSTANDARD DIFF_SSTL12 [get_ports ddr4_clk_100mhz_p]
+
+set_property PACKAGE_PIN BH24     [get_ports gpio_led[0]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[0]]
+set_property PACKAGE_PIN BG24     [get_ports gpio_led[1]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[1]]
+set_property PACKAGE_PIN BG25     [get_ports gpio_led[2]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[2]]
+set_property PACKAGE_PIN BF25     [get_ports gpio_led[3]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[3]]
+set_property PACKAGE_PIN BF26     [get_ports gpio_led[4]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[4]]
+set_property PACKAGE_PIN BF27     [get_ports gpio_led[5]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[5]]
+set_property PACKAGE_PIN BG27     [get_ports gpio_led[6]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[6]]
+set_property PACKAGE_PIN BG28     [get_ports gpio_led[7]]
+set_property IOSTANDARD  LVCMOS18 [get_ports gpio_led[7]]
+
+## USB-UART Interface
+set_property -dict { PACKAGE_PIN BJ28   IOSTANDARD LVCMOS18 } [get_ports { uart_tx }]
+set_property -dict { PACKAGE_PIN BK28   IOSTANDARD LVCMOS18 } [get_ports { uart_rx }]
+
+set_property PACKAGE_PIN BM29 [get_ports cpu_reset]
+set_property IOSTANDARD LVCMOS12 [get_ports cpu_reset]

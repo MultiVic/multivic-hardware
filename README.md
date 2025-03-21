@@ -24,27 +24,29 @@ Default address ranges, also subject to change because the number of cores and t
 | uart      | 0x80001000    | 0x1000    |
 | dma register port | 0x90001000    | 0x1000    |
 
-## Build Commands
-### Tlgen generation
-Generate the main crossbar:
-```bash
-submodules/opentitan/util/tlgen.py -t data/xbar_main.json -o src/crossbar_main
-```
-Generate the smaller crossbar at the management core data port:
-```bash
-submodules/opentitan/util/tlgen.py -t data/xbar_management_peripherals.json -o src/crossbar_management_peripherals
-```
+## Commands
+The commands are contained in a justfile. Run ```just``` to see a list of options.
 
-### Simulation - verilator
-Before simulating edit the paths for the scratchpad initialization in `simulation/top_verilator.sv`.
+The primary commands that you need to know are:
 
-Build the simulation model:
+### setup
 ```bash
-fusesoc --cores-root=. run --target=sim --tool=verilator --setup --build ess-fzi:vicuna:multicore
+CORE_COUNT=2 just setup
 ```
+This command sets the project up.
+This will:<br>
+1. Initialize the git submodules.
+2. Run the preprocessor to generate files like system.sv.
+3. Generate the xbars.
 
-Execute the simulation:
+### build
 ```bash
-# Parameter -t to record the trace in a sim.fst file
-./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator -t
+just build
 ```
+will build the project for verilator
+
+### run
+```bash
+just run
+```
+executes the project with verilator. This will pass through parameters, like `-t`.
