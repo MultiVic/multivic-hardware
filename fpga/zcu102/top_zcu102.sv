@@ -65,12 +65,10 @@ ddr4_tlul_xilinx main_memory(
 );
 
 system_multicore #(
-    //    .ManagementCoreScratchpadInstr(ManagementCoreScratchpadInstr),
-//    .ManagementCoreScratchpadData(ManagementCoreScratchpadData)
-    .ManagementDataFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/ram.vmem"),
-    .ManagementInstrFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/rom.vmem"),
-    .VectorInstrFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem" ),
-    .VectorDataFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/ram.vmem" )
+    .ManagementDataFile  (ManagementDataFile),
+    .ManagementInstrFile  (ManagementInstrFile),
+    .VectorInstrFile (VectorInstrFile),
+    .VectorDataFile (VectorDataFile)
 ) multicore (
     .clk_sys_i(clk_sys),
     .rst_sys_ni(rst_sys_n),
