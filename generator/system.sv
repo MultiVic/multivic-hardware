@@ -1,6 +1,6 @@
 
 module system_multicore #(
-    parameter int unsigned ClockFrequency   = 125_000_000,
+    parameter int unsigned ClockFrequency   = 100_000_000,
     parameter int unsigned BaudRate         = 115_200,
     parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFPGA,
     parameter ibex_xif_pkg::regfile_e RegFileVicuna = ibex_xif_pkg::RegFileFPGA,
@@ -10,10 +10,13 @@ module system_multicore #(
     parameter VectorDataFile = ""
 ) (
     input logic clk_sys_i,
-    input logic rst_sys_ni,
+    input logic rst_sys_ni, // active-low
 
     input  logic uart_rx_i,
-    output logic uart_tx_o
+    output logic uart_tx_o,
+
+    output tlul_pkg::tl_h2d_t dma_main_memory_req_o,
+    input  tlul_pkg::tl_d2h_t dma_main_memory_rsp_i
 ); 
 
 // --- mhp performance counter for verilator ---
@@ -51,6 +54,7 @@ tlul_pkg::tl_h2d_t dma_host_port_req;
 tlul_pkg::tl_d2h_t dma_host_port_rsp;
 tlul_pkg::tl_h2d_t dma_register_port_req;
 tlul_pkg::tl_d2h_t dma_register_port_rsp;
+
 
 tlul_pkg::tl_h2d_t management_scratchpad_instr_req;
 tlul_pkg::tl_d2h_t management_scratchpad_instr_rsp;
@@ -104,11 +108,18 @@ xbar_management_peripherals #() u_xbar_management_peripherals(
 
 // --- management core ---
 rv_core_ibex #(
-    .PMPEnable('b0),
-    .MHPMCounterNum( 10),
-    .RegFile(RegFile),
-    .ICache('b0),
-    .SecureIbex('b0)
+    .PMPEnable          ('b0),
+    .MHPMCounterNum     ( 2),
+    .RegFile            (RegFile),
+    .BranchTargetALU    (1'b0),
+    .WritebackStage     (1'b0),
+    .ICache             (1'b0),
+    .ICacheECC          (1'b0),
+    .ICacheScramble     (1'b0),
+    .BranchPredictor    (1'b0),
+    .DbgTriggerEn       (1'b0),
+    .DbgHwBreakNum      (  1),
+    .SecureIbex         ('b0)
 ) management_core_ibex (
     .alert_tx_o  (),
     .alert_rx_i  (),
@@ -175,8 +186,8 @@ dma #() u_dma(
     .host_tl_h_o(dma_host_port_req),
 
     // CTN Port (Memory Interface, towards the Main Memory)
-    .ctn_tl_d2h_i(),
-    .ctn_tl_h2d_o(),
+    .ctn_tl_d2h_i(dma_main_memory_rsp_i),
+    .ctn_tl_h2d_o(dma_main_memory_req_o),
 
     // System Port, unused
     .sys_i(),

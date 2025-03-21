@@ -7,7 +7,7 @@ default:
 
 # Build the project
 build:
-    fusesoc --cores-root=. run --target=sim --tool=verilator --setup --build ess-fzi:vicuna:multicore
+    fusesoc --cores-root=. run --target=sim --tool=verilator --setup --build fzi:vicuna:multicore
 
 #Sets everything needed for the project up.
 setup:
@@ -17,7 +17,7 @@ setup:
 
 # Run the project using verilator
 run *OPTIONS: 
-    ./build/ess-fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator \
+    ./build/fzi_vicuna_multicore_0.0.1/sim-verilator/Vtop_verilator \
     {{OPTIONS}}
     #-CFLAGS \
     #-D VectorDataFile="$SOFTWARE_PATH/vector_loader/build/ram.vmem" \

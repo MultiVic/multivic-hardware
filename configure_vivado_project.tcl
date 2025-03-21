@@ -1,0 +1,2 @@
+config_ip_cache -use_cache_location /home/kirschner/vivado_ip_cache 
+update_ip_catalog

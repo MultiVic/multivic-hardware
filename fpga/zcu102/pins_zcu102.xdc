@@ -1,0 +1,102 @@
+# ----------- System Clock ----------- #
+
+set_property IOSTANDARD LVDS_25 [get_ports clk_125_n]
+set_property PACKAGE_PIN G21    [get_ports clk_125_p]
+set_property PACKAGE_PIN F21    [get_ports clk_125_n]
+set_property IOSTANDARD LVDS_25 [get_ports clk_125_p]
+
+# --------------- Reset -------------- #
+
+set_property PACKAGE_PIN AM13 [get_ports cpu_reset]
+set_property IOSTANDARD LVCMOS33 [get_ports cpu_reset]
+
+# --------------- UART --------------- #
+
+set_property -dict { PACKAGE_PIN F13   IOSTANDARD LVCMOS33 } [get_ports { uart_tx }]
+set_property -dict { PACKAGE_PIN E13    IOSTANDARD LVCMOS33 } [get_ports { uart_rx }]
+
+# --------------- GPIO --------------- #
+set_property PACKAGE_PIN AG14     [get_ports gpio_led[0]]
+set_property IOSTANDARD LVCMOS33  [get_ports gpio_led[0]]
+set_property PACKAGE_PIN AF13     [get_ports gpio_led[1]]
+set_property IOSTANDARD LVCMOS33  [get_ports gpio_led[1]]
+set_property PACKAGE_PIN AE13     [get_ports gpio_led[2]]
+set_property IOSTANDARD LVCMOS33  [get_ports gpio_led[2]]
+set_property PACKAGE_PIN AJ14     [get_ports gpio_led[3]]
+set_property IOSTANDARD LVCMOS33  [get_ports gpio_led[3]]
+set_property PACKAGE_PIN AJ15     [get_ports gpio_led[4]]
+set_property IOSTANDARD  LVCMOS33 [get_ports gpio_led[4]]
+set_property PACKAGE_PIN AH13     [get_ports gpio_led[5]]
+set_property IOSTANDARD  LVCMOS33 [get_ports gpio_led[5]]
+set_property PACKAGE_PIN AH14     [get_ports gpio_led[6]]
+set_property IOSTANDARD  LVCMOS33 [get_ports gpio_led[6]]
+set_property PACKAGE_PIN AL12     [get_ports gpio_led[7]]
+set_property IOSTANDARD  LVCMOS33 [get_ports gpio_led[7]]
+
+
+# --------------- DDR4 --------------- #
+
+set_property BOARD_PART_PIN {user_si570_sysclk_n} [get_ports c0_sys_clk_n]
+set_property BOARD_PART_PIN {user_si570_sysclk_p} [get_ports c0_sys_clk_p]
+
+set_property BOARD_PART_PIN {c0_ddr4_act_n} [get_ports c0_ddr4_act_n]
+
+set_property BOARD_PART_PIN {c0_ddr4_adr0} [get_ports c0_ddr4_adr[0]]
+set_property BOARD_PART_PIN {c0_ddr4_adr1} [get_ports c0_ddr4_adr[1]]
+set_property BOARD_PART_PIN {c0_ddr4_adr2} [get_ports c0_ddr4_adr[2]]
+set_property BOARD_PART_PIN {c0_ddr4_adr3} [get_ports c0_ddr4_adr[3]]
+set_property BOARD_PART_PIN {c0_ddr4_adr4} [get_ports c0_ddr4_adr[4]]
+set_property BOARD_PART_PIN {c0_ddr4_adr5} [get_ports c0_ddr4_adr[5]]
+set_property BOARD_PART_PIN {c0_ddr4_adr6} [get_ports c0_ddr4_adr[6]]
+set_property BOARD_PART_PIN {c0_ddr4_adr7} [get_ports c0_ddr4_adr[7]]
+set_property BOARD_PART_PIN {c0_ddr4_adr8} [get_ports c0_ddr4_adr[8]]
+set_property BOARD_PART_PIN {c0_ddr4_adr9} [get_ports c0_ddr4_adr[9]]
+set_property BOARD_PART_PIN {c0_ddr4_adr10} [get_ports c0_ddr4_adr[10]]
+set_property BOARD_PART_PIN {c0_ddr4_adr11} [get_ports c0_ddr4_adr[11]]
+set_property BOARD_PART_PIN {c0_ddr4_adr12} [get_ports c0_ddr4_adr[12]]
+set_property BOARD_PART_PIN {c0_ddr4_adr13} [get_ports c0_ddr4_adr[13]]
+set_property BOARD_PART_PIN {c0_ddr4_adr14} [get_ports c0_ddr4_adr[14]]
+set_property BOARD_PART_PIN {c0_ddr4_adr15} [get_ports c0_ddr4_adr[15]]
+set_property BOARD_PART_PIN {c0_ddr4_adr16} [get_ports c0_ddr4_adr[16]]
+
+set_property BOARD_PART_PIN {c0_ddr4_ba0} [get_ports c0_ddr4_ba[0]]
+set_property BOARD_PART_PIN {c0_ddr4_ba1} [get_ports c0_ddr4_ba[1]]
+
+set_property BOARD_PART_PIN {c0_ddr4_bg} [get_ports c0_ddr4_bg]
+
+set_property BOARD_PART_PIN {c0_ddr4_ck_c} [get_ports c0_ddr4_ck_c]
+set_property BOARD_PART_PIN {c0_ddr4_ck_t} [get_ports c0_ddr4_ck_t]
+
+set_property BOARD_PART_PIN {c0_ddr4_cke} [get_ports c0_ddr4_cke]
+
+set_property BOARD_PART_PIN {c0_ddr4_cs_n} [get_ports c0_ddr4_cs_n]
+
+set_property BOARD_PART_PIN {c0_ddr4_dm_dbi_n0} [get_ports c0_ddr4_dm_dbi_n[0]]
+set_property BOARD_PART_PIN {c0_ddr4_dm_dbi_n1} [get_ports c0_ddr4_dm_dbi_n[1]]
+
+set_property BOARD_PART_PIN {c0_ddr4_dq0} [get_ports c0_ddr4_dq[0]]
+set_property BOARD_PART_PIN {c0_ddr4_dq1} [get_ports c0_ddr4_dq[1]]
+set_property BOARD_PART_PIN {c0_ddr4_dq2} [get_ports c0_ddr4_dq[2]]
+set_property BOARD_PART_PIN {c0_ddr4_dq3} [get_ports c0_ddr4_dq[3]]
+set_property BOARD_PART_PIN {c0_ddr4_dq4} [get_ports c0_ddr4_dq[4]]
+set_property BOARD_PART_PIN {c0_ddr4_dq5} [get_ports c0_ddr4_dq[5]]
+set_property BOARD_PART_PIN {c0_ddr4_dq6} [get_ports c0_ddr4_dq[6]]
+set_property BOARD_PART_PIN {c0_ddr4_dq7} [get_ports c0_ddr4_dq[7]]
+set_property BOARD_PART_PIN {c0_ddr4_dq8} [get_ports c0_ddr4_dq[8]]
+set_property BOARD_PART_PIN {c0_ddr4_dq9} [get_ports c0_ddr4_dq[9]]
+set_property BOARD_PART_PIN {c0_ddr4_dq10} [get_ports c0_ddr4_dq[10]]
+set_property BOARD_PART_PIN {c0_ddr4_dq11} [get_ports c0_ddr4_dq[11]]
+set_property BOARD_PART_PIN {c0_ddr4_dq12} [get_ports c0_ddr4_dq[12]]
+set_property BOARD_PART_PIN {c0_ddr4_dq13} [get_ports c0_ddr4_dq[13]]
+set_property BOARD_PART_PIN {c0_ddr4_dq14} [get_ports c0_ddr4_dq[14]]
+set_property BOARD_PART_PIN {c0_ddr4_dq15} [get_ports c0_ddr4_dq[15]]
+
+set_property BOARD_PART_PIN {c0_ddr4_dqs_c0} [get_ports c0_ddr4_dqs_c[0]]
+set_property BOARD_PART_PIN {c0_ddr4_dqs_c1} [get_ports c0_ddr4_dqs_c[1]]
+
+set_property BOARD_PART_PIN {c0_ddr4_dqs_t0} [get_ports c0_ddr4_dqs_t[0]]
+set_property BOARD_PART_PIN {c0_ddr4_dqs_t1} [get_ports c0_ddr4_dqs_t[1]]
+
+set_property BOARD_PART_PIN {c0_ddr4_odt} [get_ports c0_ddr4_odt]
+
+set_property BOARD_PART_PIN {c0_ddr4_reset_n} [get_ports c0_ddr4_reset_n]
