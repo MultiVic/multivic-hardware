@@ -3,7 +3,7 @@
 __pycache__
 
 # Waveforms
-/sim.fst
+*.fst
 
 # Simulation Uart output
 /uart0.log
