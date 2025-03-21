@@ -95,8 +95,7 @@ prim_generic_ram_2p #(
     .Depth        (Depth),
     .MemInitFile  (MemInitFile)
 ) u_ram_2p (
-    .clk_a_i        (clk_i),
-    .clk_b_i        (clk_i),
+    .clk_i        (clk_i),
 
     .a_req_i      (a_req),
     .a_write_i    (a_we),

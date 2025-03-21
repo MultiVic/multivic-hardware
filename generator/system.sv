@@ -125,9 +125,6 @@ rv_core_ibex #(
     .DbgHwBreakNum      (  1),
     .SecureIbex         ('b0)
 ) management_core_ibex (
-    .alert_tx_o  (),
-    .alert_rx_i  (),
-
     // Inter-module signals
     .rst_cpu_n_o(),
     .ram_cfg_i(),
@@ -176,10 +173,6 @@ dma #() u_dma(
     .intr_dma_chunk_done_o(),
     .intr_dma_error_o(),
     .lsio_trigger_i(1'b0),
-
-    // TODO Remove alerts?
-    .alert_rx_i(),
-    .alert_tx_o(),
 
     // Device Port (Register Interface)
     .tl_d_i(dma_register_port_req),
