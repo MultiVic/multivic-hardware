@@ -1,9 +1,9 @@
 module top_vcu128 #(
 //    parameter ManagementCoreScratchpadInstr = "/home/kirschner/work/vicuna-software/rom.vmem",
 //    parameter ManagementCoreScratchpadData = "/home/kirschner/work/vicuna-software/ram.vmem"
-    parameter ManagementDataFile  ="/home/krusekamp/vicuna-multicore-benchmarks/build/ram.vmem",
-    parameter ManagementInstrFile  ="/home/krusekamp/vicuna-multicore-benchmarks/build/rom.vmem",
-    parameter VectorInstrFile ="/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem" ,
+    parameter ManagementDataFile  ="/home/kirschner/work/vicuna-software/ram.vmem",
+    parameter ManagementInstrFile  ="/home/kirschner/work/vicuna-software/rom.vmem",
+    parameter VectorInstrFile ="/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem",
     parameter VectorDataFile ="/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/ram.vmem"
 )(
     input           ddr4_clk_100mhz_n,
@@ -66,10 +66,10 @@ ddr4_tlul_xilinx main_memory(
 system_multicore #(
 //    .ManagementCoreScratchpadInstr(ManagementCoreScratchpadInstr),
 //    .ManagementCoreScratchpadData(ManagementCoreScratchpadData)
-    .ManagementDataFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/ram.vmem"),
-    .ManagementInstrFile  ("/home/krusekamp/vicuna-multicore-benchmarks/build/rom.vmem"),
-    .VectorInstrFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/rom.vmem" ),
-    .VectorDataFile ("/home/krusekamp/vicuna-multicore-benchmarks/vector_loader/build/ram.vmem" )
+    .ManagementDataFile  (ManagementDataFile),
+    .ManagementInstrFile  (ManagementInstrFile),
+    .VectorInstrFile (VectorInstrFile),
+    .VectorDataFile (VectorDataFile)
 ) multicore (
     .clk_sys_i(clk_sys),
     .rst_sys_ni(rst_sys_n),

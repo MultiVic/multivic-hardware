@@ -16,3 +16,6 @@ git+https://github.com/lowRISC/edalize.git@v0.2.5
 
 # Development version with OT-specific changes
 git+https://github.com/lowRISC/fusesoc.git@ot-0.5
+
+# Cog for dynamic file generation
+cogapp

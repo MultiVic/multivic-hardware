@@ -30,7 +30,7 @@ set_false_path -hold -to [get_ports uart_tx]
 #############
 # DDR4      #
 #############
-set MIG_TCK 3
+set MIG_TCK 10
 
 #set_output_delay -min 0.0 -clock [get_clocks mmcm_clkout0] [get_ports c0_ddr4_reset_n]
 #set_output_delay -max $MIG_TCK -clock [get_clocks mmcm_clkout0] [get_ports c0_ddr4_reset_n]
