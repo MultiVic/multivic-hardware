@@ -68,6 +68,10 @@ tlul_pkg::tl_d2h_t management_scratchpad_data_rsp_b;
 [[[end]]]
 tlul_pkg::tl_h2d_t uart_req;
 tlul_pkg::tl_d2h_t uart_rsp;
+tlul_pkg::tl_h2d_t timer_req;
+tlul_pkg::tl_d2h_t timer_rsp;
+
+logic timer_irq;
 
 // --- crossbar ---
 xbar_main #() u_xbar_main (
@@ -103,6 +107,9 @@ xbar_management_peripherals #() u_xbar_management_peripherals(
     .tl_dma_register_port_o(dma_register_port_req),
     .tl_dma_register_port_i(dma_register_port_rsp),
 
+    .tl_timer_o(timer_req),
+    .tl_timer_i(timer_rsp),
+
     .scanmode_i()
 );
 
@@ -121,16 +128,13 @@ rv_core_ibex #(
     .DbgHwBreakNum      (  1),
     .SecureIbex         ('b0)
 ) management_core_ibex (
-    .alert_tx_o  (),
-    .alert_rx_i  (),
-
     // Inter-module signals
     .rst_cpu_n_o(),
     .ram_cfg_i(),
     .hart_id_i(32'h0),
     .boot_addr_i(32'h0),
     .irq_software_i(),
-    .irq_timer_i(),
+    .irq_timer_i(timer_irq),
     .irq_external_i(),
     .esc_tx_i(),
     .esc_rx_o(),
@@ -172,10 +176,6 @@ dma #() u_dma(
     .intr_dma_chunk_done_o(),
     .intr_dma_error_o(),
     .lsio_trigger_i(1'b0),
-
-    // TODO Remove alerts?
-    .alert_rx_i(),
-    .alert_tx_o(),
 
     // Device Port (Register Interface)
     .tl_d_i(dma_register_port_req),
@@ -238,6 +238,16 @@ simple_uart #(
 
     .tl_i(uart_req),
     .tl_o(uart_rsp)
+);
+
+rv_timer u_timer (
+    .clk_i(clk_sys_i),
+    .rst_ni(rst_sys_ni),
+
+    .tl_i(timer_req),
+    .tl_o(timer_rsp),
+
+    .intr_timer_expired_hart0_timer0_o(timer_irq)
 );
 
 [[[cog import SystemGenerator as g; g.generateCores() ]]]

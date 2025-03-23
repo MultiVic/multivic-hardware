@@ -45,6 +45,18 @@
             }]
         },
         {
+            "name": "timer",
+            "type": "device",
+            "clock": "clk_main_i",
+            "reset": "rst_main_ni",
+
+            "xbar": false,
+            "addr_range": [{
+                "base_addrs": {"management_peripherals":"0x80002000"},
+                "size_byte": "0x1000"
+            }]
+        },
+        {
             "name": "dma_register_port",
             "type": "device",
             "clock": "clk_main_i",
@@ -61,6 +73,7 @@
         "management_core_data": [
             "management_scratchpad_data",
             "uart",
+            "timer",
             "dma_register_port"
         ]
     }
