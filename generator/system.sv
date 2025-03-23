@@ -107,6 +107,9 @@ xbar_management_peripherals #() u_xbar_management_peripherals(
     .tl_dma_register_port_o(dma_register_port_req),
     .tl_dma_register_port_i(dma_register_port_rsp),
 
+    .tl_timer_o(timer_req),
+    .tl_timer_i(timer_rsp),
+
     .scanmode_i()
 );
 
