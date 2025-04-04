@@ -1,3 +1,10 @@
+logic CORE_NAME_clk_buf;
+BUFGCE u_CORE_NAME_clk_buf (
+    .I (clk_sys_i),
+    .CE(1'b1),
+    .O (CORE_NAME_clk_buf)
+);
+
 // --- CORE_NAME core
 rv_core_vicuna #(
     .RegFile(RegFileVicuna),
@@ -6,7 +13,7 @@ rv_core_vicuna #(
     .VREG_TYPE(VRegType),
     .MUL_TYPE(MulType)
 ) CORE_NAME_core (
-    .clk_i (clk_sys_i),
+    .clk_i (CORE_NAME_clk_buf),
     .rst_ni(rst_sys_ni),
 
     // Instruction memory interface
@@ -20,10 +27,10 @@ rv_core_vicuna #(
 
 // --- scratchpad CORE_NAME ---
 sram #(
-    .MemSize     (64 * 1024), // 64 KiB
+    .MemSize     (16 * 1024), // 16 KiB
     .MemInitFile (VectorInstrFile)
 ) CORE_NAME_scratchpad_instr (
-    .clk_i (clk_sys_i),
+    .clk_i (CORE_NAME_clk_buf),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4True),
@@ -35,10 +42,10 @@ sram #(
 );
 
 sram #(
-    .MemSize     (64 * 1024), // 64 KiB
+    .MemSize     (512 * 1024), // 512 KiB
     .MemInitFile (VectorDataFile)
 ) CORE_NAME_scratchpad_data (
-    .clk_i (clk_sys_i),
+    .clk_i (CORE_NAME_clk_buf),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),

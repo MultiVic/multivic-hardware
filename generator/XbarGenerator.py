@@ -4,8 +4,8 @@ from Variables import core_count
 # default options
 base_addrs = 0x00200000
 step = 0x00100000
-memory_size_data = 0x10000
-memory_size_instr = 0x10000
+memory_size_data = 0x80000
+memory_size_instr = 0x4000
 
 def generate_device_entry(name, base_addr_hart, memory_size):
     return {
@@ -14,6 +14,9 @@ def generate_device_entry(name, base_addr_hart, memory_size):
         "clock": "clk_main_i",
         "reset": "rst_main_ni",
         "xbar": False,
+        "pipeline": True,
+        "req_fifo_pass": False,
+        "rsp_fifo_pass": False,
         "addr_range": [
             {
                 "base_addrs": {"hart": base_addr_hart},
