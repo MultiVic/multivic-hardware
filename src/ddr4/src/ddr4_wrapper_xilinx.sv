@@ -56,6 +56,7 @@ typedef struct packed {
   integer StrobeWidth;
 } dram_cfg_t;
 
+`ifdef TARGET_ZCU102
 // Configuration for ZCU102
 localparam dram_cfg_t cfg = '{
   EnCDC         : 1, // ??? MHz axi (attention CDC logdepth)
@@ -64,6 +65,18 @@ localparam dram_cfg_t cfg = '{
   DataWidth     : 128,
   StrobeWidth   : 16
 };
+`endif
+
+`ifdef TARGET_VCU128
+// Configuration for VCU128
+localparam dram_cfg_t cfg = '{
+  EnCDC         : 1,
+  IdWidth       : 8,
+  AddrWidth     : 32,
+  DataWidth     : 512,
+  StrobeWidth   : 64
+};
+`endif
 
 localparam SoC_DataWidth = $bits(soc_req_i.w.data);
 localparam SoC_IdWidth   = $bits(soc_req_i.ar.id);
