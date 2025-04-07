@@ -44,21 +44,6 @@ module system_multicore #(
     localparam vproc_pkg::vreg_type VRegType = vproc_pkg::VREG_XLNX_RAM32M;
 `endif
 
-logic management_core_clk_buf;
-BUFG mgmt_core_clk_bufg (
-    .I(clk_sys_i),
-    .O(management_core_clk_buf)
-);
-logic dma_clk_buf;
-BUFG dma_clk_bufg (
-    .I(clk_sys_i),
-    .O(dma_clk_buf)
-);
-logic peripheral_clk_buf;
-BUFG peripheral_clk_bufg (
-    .I(clk_sys_i),
-    .O(peripheral_clk_buf)
-); 
 
 // --- tlul declaration ---
 tlul_pkg::tl_h2d_t management_core_instr_req;
@@ -91,7 +76,7 @@ logic timer_irq;
 
 // --- crossbar ---
 xbar_main #() u_xbar_main (
-    .clk_main_i(dma_clk_buf),
+    .clk_main_i(clk_sys_i),
     .rst_main_ni(rst_sys_ni),
 
     .tl_dma_i(dma_host_port_req),
@@ -108,7 +93,7 @@ xbar_main #() u_xbar_main (
 );
 
 xbar_management_peripherals #() u_xbar_management_peripherals(
-    .clk_main_i(peripheral_clk_buf),
+    .clk_main_i(clk_sys_i),
     .rst_main_ni(rst_sys_ni),
 
     .tl_management_core_data_i(management_core_data_req),
@@ -175,7 +160,7 @@ rv_core_ibex #(
     .scan_rst_ni(1'b1),
 
     // Clock and reset connections
-    .clk_i (management_core_clk_buf),
+    .clk_i (clk_sys_i),
     .rst_ni (rst_sys_ni),
     .rst_edn_ni(1'b1), // TODO: look wether those can be removed
     .rst_esc_ni(1'b1),
@@ -183,7 +168,7 @@ rv_core_ibex #(
 );
 
 dma #() u_dma(
-    .clk_i(dma_clk_buf),
+    .clk_i(clk_sys_i),
     .rst_ni(rst_sys_ni),
     .scanmode_i(),
 
@@ -215,7 +200,7 @@ sram #(
     .MemSize    (64 * 1024), // 64 KiB
     .MemInitFile(ManagementInstrFile)
 ) management_scratchpad_instr (
-    .clk_i (management_core_clk_buf),
+    .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4True),
@@ -230,7 +215,7 @@ sram #(
     .MemSize     (64 * 1024), // 64 KiB
     .MemInitFile (ManagementDataFile)
 ) management_scratchpad_data (
-    .clk_i (management_core_clk_buf),
+    .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .en_ifetch_i(prim_mubi_pkg::MuBi4False),
@@ -246,7 +231,7 @@ simple_uart #(
     .ClockFrequency (ClockFrequency),
     .BaudRate       (BaudRate)
 ) u_simple_uart (
-    .clk_i (peripheral_clk_buf),
+    .clk_i (clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .uart_rx_i(uart_rx_i),
@@ -257,7 +242,7 @@ simple_uart #(
 );
 
 rv_timer u_timer (
-    .clk_i(peripheral_clk_buf),
+    .clk_i(clk_sys_i),
     .rst_ni(rst_sys_ni),
 
     .tl_i(timer_req),
