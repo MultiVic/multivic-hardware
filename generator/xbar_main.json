@@ -25,6 +25,9 @@
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
+            "pipeline": "True",
+            "req_fifo_pass": "False",
+            "rsp_fifo_pass": "False",
 
             "xbar": false,
             "addr_range": [{
@@ -37,6 +40,9 @@
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
+            "pipeline": "True",
+            "req_fifo_pass": "False",
+            "rsp_fifo_pass": "False",
 
             "xbar": false,
             "addr_range": [{

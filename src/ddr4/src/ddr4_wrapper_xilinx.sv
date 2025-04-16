@@ -56,6 +56,7 @@ typedef struct packed {
   integer StrobeWidth;
 } dram_cfg_t;
 
+`ifdef TARGET_ZCU102
 // Configuration for ZCU102
 localparam dram_cfg_t cfg = '{
   EnCDC         : 1, // ??? MHz axi (attention CDC logdepth)
@@ -64,6 +65,18 @@ localparam dram_cfg_t cfg = '{
   DataWidth     : 128,
   StrobeWidth   : 16
 };
+`endif
+
+`ifdef TARGET_VCU128
+// Configuration for VCU128
+localparam dram_cfg_t cfg = '{
+  EnCDC         : 1,
+  IdWidth       : 8,
+  AddrWidth     : 32,
+  DataWidth     : 512,
+  StrobeWidth   : 64
+};
+`endif
 
 localparam SoC_DataWidth = $bits(soc_req_i.w.data);
 localparam SoC_IdWidth   = $bits(soc_req_i.ar.id);
@@ -83,6 +96,7 @@ localparam SoC_AddrWidth = $bits(soc_req_i.ar.addr);
 // Clock on which is clocked the DRAM AXI
 logic dram_axi_clk, dram_rst_o;
 
+
 // Signals before resizing
 axi_soc_req_t  soc_dresizer_req;
 axi_soc_resp_t soc_dresizer_rsp;
@@ -95,9 +109,31 @@ axi_dw_resp_t dresizer_iresizer_rsp;
 axi_dw_iw_req_t  iresizer_cdc_req, cdc_dram_req;
 axi_dw_iw_resp_t iresizer_cdc_rsp, cdc_dram_rsp;
 
-// Entry signals
-assign soc_dresizer_req = soc_req_i;
-assign soc_rsp_o = soc_dresizer_rsp;
+
+// Instantiante axi fifo for more elasticity
+axi_fifo #(
+  .Depth(32'd1),
+  .FallThrough(1'b0),
+
+  .aw_chan_t(axi_soc_aw_chan_t),
+  .w_chan_t (axi_soc_w_chan_t ),
+  .b_chan_t (axi_soc_b_chan_t ),
+  .ar_chan_t(axi_soc_ar_chan_t),
+  .r_chan_t (axi_soc_r_chan_t ),
+  .axi_req_t(axi_soc_req_t ),
+  .axi_resp_t(axi_soc_resp_t)
+) i_axi_fifo (
+  .clk_i     (soc_clk_i),
+  .rst_ni    (soc_resetn_i),
+  .test_i    (1'b0),
+
+  // AXI Slave
+  .slv_req_i  (soc_req_i),
+  .slv_resp_o (soc_rsp_o),
+  // AXI Master
+  .mst_req_o  (soc_dresizer_req),
+  .mst_resp_i (soc_dresizer_rsp)
+);
 
 /////////////////////////////////////
 // Instianciate data width resizer //

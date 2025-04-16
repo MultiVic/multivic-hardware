@@ -37,6 +37,9 @@
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
+            "pipeline": true,
+            "req_fifo_pass": false,
+            "rsp_fifo_pass": false,
 
             "xbar": false,
             "addr_range": [{
@@ -49,6 +52,9 @@
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
+            "pipeline": true,
+            "req_fifo_pass": false,
+            "rsp_fifo_pass": false,
 
             "xbar": false,
             "addr_range": [{
@@ -61,6 +67,9 @@
             "type": "device",
             "clock": "clk_main_i",
             "reset": "rst_main_ni",
+            "pipeline": true,
+            "req_fifo_pass": false,
+            "rsp_fifo_pass": false,
 
             "xbar": false,
             "addr_range": [{

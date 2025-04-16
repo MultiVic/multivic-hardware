@@ -44,6 +44,7 @@ module system_multicore #(
     localparam vproc_pkg::vreg_type VRegType = vproc_pkg::VREG_XLNX_RAM32M;
 `endif
 
+
 // --- tlul declaration ---
 tlul_pkg::tl_h2d_t management_core_instr_req;
 tlul_pkg::tl_d2h_t management_core_instr_rsp;
@@ -140,8 +141,8 @@ rv_core_ibex #(
     .esc_rx_o(),
     .debug_req_i(),
     .crash_dump_o(),
-    .lc_cpu_en_i(5),
-    .pwrmgr_cpu_en_i(5),
+    .lc_cpu_en_i(lc_ctrl_pkg::LC_TX_DEFAULT),
+    .pwrmgr_cpu_en_i(lc_ctrl_pkg::LC_TX_DEFAULT),
     .pwrmgr_o(),
     .nmi_wdog_i(),
     .edn_o(),
@@ -156,14 +157,14 @@ rv_core_ibex #(
     .cfg_tl_d_i(),
     .cfg_tl_d_o(),
     .scanmode_i(),
-    .scan_rst_ni('b1),
+    .scan_rst_ni(1'b1),
 
     // Clock and reset connections
     .clk_i (clk_sys_i),
     .rst_ni (rst_sys_ni),
-    .rst_edn_ni('b1), // TODO: look wether those can be removed
-    .rst_esc_ni('b1),
-    .rst_otp_ni('b1)
+    .rst_edn_ni(1'b1), // TODO: look wether those can be removed
+    .rst_esc_ni(1'b1),
+    .rst_otp_ni(1'b1)
 );
 
 dma #() u_dma(
