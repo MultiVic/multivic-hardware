@@ -4,6 +4,7 @@ BUFGCE u_CORE_NAME_clk_buf (
     .CE(1'b1),
     .O (CORE_NAME_clk_buf)
 );
+// assign CORE_NAME_clk_buf = clk_sys_i;
 
 // --- CORE_NAME core
 rv_core_vicuna #(
