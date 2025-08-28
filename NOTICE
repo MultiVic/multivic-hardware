@@ -1,0 +1,25 @@
+MultiVic Hardware - Copyright (C) Maximilian Kirschner, Ben Krusekamp 2025
+Licensed under the Solderpad Hardware License (SHL) 2.1 (the "License"); you may not use this file except in compliance with the License.
+You may obtain a copy of the License at:
+https://solderpad.org/licenses/SHL-2.1/
+
+This project incorporates material from the following third-party projects, which are subject to their own licenses:
+
+---
+1. Component: `simulation/*`
+   Source: https://github.com/lowRISC/ibex-demo-system
+   Original Author: lowRISC Contributors
+   License: Apache License 2.0
+
+---
+2. Component: `src/ddr4/ddr4_wrapper_xilinx.sv`
+   Source: https://github.com/pulp-platform/cheshire
+   Original Author: ETH Zurich and University of Bologna
+   License: Solderpad Hardware License 0.51
+
+
+---
+3. Component: `src/ddr4/tlul2axi_pkg.sv`, `src/ddr4/tlul2axi.sv`
+   Source: https://github.com/pulp-platform/opentitan
+   Original Author: ETH Zurich and University of Bologna
+   License: Solderpad Hardware License 0.51
