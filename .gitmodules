@@ -1,12 +1,12 @@
 [submodule "submodules/vicuna"]
 	path = submodules/vicuna
-	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/vicuna.git
+	url = https://github.com/MultiVic/vicuna.git
 [submodule "submodules/opentitan"]
 	path = submodules/opentitan
-	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/opentitan.git
+	url = https://github.com/MultiVic/opentitan.git
 [submodule "submodules/ibex-xif"]
 	path = submodules/ibex-xif
-	url = git@essgitlab.fzi.de:ecs/ai-accelerators/vicuna/ibex-xif.git
+	url = https://github.com/MultiVic/ibex-xif.git
 [submodule "submodules/axi"]
 	path = submodules/axi
 	url = https://github.com/pulp-platform/axi.git
