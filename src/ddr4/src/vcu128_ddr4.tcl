@@ -1,3 +1,7 @@
+# Copyright (c) 2025 Maximilian Kirschner
+# Licensed under the Solderpad Hardware License v2.1. See LICENSE file in the project root for details.
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
 set ipName xlnx_mig_ddr4
 create_ip -name ddr4 -vendor xilinx.com -library ip -version 2.2 -module_name $ipName
 

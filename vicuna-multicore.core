@@ -1,3 +1,7 @@
+# Copyright (c) 2025 Maximilian Kirschner, Ben Krusekamp
+# Licensed under the Solderpad Hardware License v2.1. See LICENSE file in the project root for details.
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
 CAPI=2:
 name: "fzi:vicuna:multicore:0.0.1"
 description: "a multicore system with one management core and multiple ai accellerator cores"

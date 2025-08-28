@@ -1,3 +1,7 @@
+// Copyright (c) 2025 Maximilian Kirschner
+// Licensed under the Solderpad Hardware License v2.1. See LICENSE file in the project root for details.
+// SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
 module top_zcu102 #(
 //    parameter ManagementCoreScratchpadInstr = "/home/kirschner/work/vicuna-software/rom.vmem",
 //    parameter ManagementCoreScratchpadData = "/home/kirschner/work/vicuna-software/ram.vmem"

@@ -1,4 +1,5 @@
 // Copyright 2023 ETH Zurich and University of Bologna.
+// Portion copyright (C) Maximilian Kirschner 2025
 // Solderpad Hardware License, Version 0.51, see LICENSE for details.
 // SPDX-License-Identifier: SHL-0.51
 //

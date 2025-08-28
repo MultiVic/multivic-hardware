@@ -1,3 +1,7 @@
+// Copyright (c) 2025 Maximilian Kirschner, Ben Krusekamp
+// Licensed under the Solderpad Hardware License v2.1. See LICENSE file in the project root for details.
+// SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
 module sram 
 import prim_mubi_pkg::mubi4_t;
 #(

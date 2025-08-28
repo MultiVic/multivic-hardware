@@ -1,3 +1,7 @@
+# Copyright (c) 2025 Maximilian Kirschner
+# Licensed under the Solderpad Hardware License v2.1. See LICENSE file in the project root for details.
+# SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
+
 set_property PACKAGE_PIN BJ51       [get_ports ddr4_clk_100mhz_n]
 set_property IOSTANDARD DIFF_SSTL12 [get_ports ddr4_clk_100mhz_n]
 set_property PACKAGE_PIN BH51       [get_ports ddr4_clk_100mhz_p]
