@@ -64,6 +64,7 @@ make --file config.mk VPROC_CONFIG=legacy VREG_W=2048 VPIPE_W_VMUL=1024
 ```
 
 ## License
-Unless otherwise noted, the code in this repository is licensed under the MIT License. See LICENSE for details.
+## License
 
-Some components come from third-party libraries and are licensed under their respective licenses. These are listed in the NOTICE file.
+Unless otherwise noted, everything in this repository is licensed under the [Solderpad Hardware License v2.1](https://solderpad.org/licenses/SHL-2.1/), a
+permissive free software license that is based on the Apache-2.0 license.
